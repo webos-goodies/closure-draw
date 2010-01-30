@@ -10,7 +10,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Copyright 2007 Google Inc. All Rights Reserved.
+// Copyright 2010 Chihiro Ito. All Rights Reserved.
 
 goog.provide('closuredraw.AbstractMode');
 goog.provide('closuredraw.MoveMode');
