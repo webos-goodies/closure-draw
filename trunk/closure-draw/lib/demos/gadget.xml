@@ -13,13 +13,13 @@
 <Content type="html" view="home,profile,default,canvas"><![CDATA[
 
 <style type="text/css">
-  @import url(from_closure_library/css/toolbar.css);
-  @import url(from_closure_library/css/colormenubutton.css);
-  @import url(css/closure-draw.css);
+  @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/from_closure_library/css/toolbar.css);
+  @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/from_closure_library/css/colormenubutton.css);
+  @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/css/closure-draw.css);
   body { padding:0; margin:0; }
   #warning { color:red; text-align: center; margin: 0px 0px 1em; display:none; }
 </style>
-<script type="text/javascript" src="gadget-min.js"></script>
+<script type="text/javascript" src="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/gadget-min.js"></script>
 <script type="text/javascript">
   gadgets.util.registerOnLoadHandler(function() {
     initialize();
