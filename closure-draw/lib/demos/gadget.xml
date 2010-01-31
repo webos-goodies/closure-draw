@@ -11,26 +11,31 @@
     <Require feature="dynamic-height" />
   </ModulePrefs>
 <Content type="html" view="home,profile,default,canvas"><![CDATA[
-
-<style type="text/css">
-  @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/from_closure_library/css/toolbar.css);
-  @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/from_closure_library/css/colormenubutton.css);
-  @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/css/closure-draw.css);
-  body { padding:0; margin:0; }
-  #warning { color:red; text-align: center; margin: 0px 0px 1em; display:none; }
-</style>
-<script type="text/javascript" src="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/gadget-min.js"></script>
-<script type="text/javascript">
-  gadgets.util.registerOnLoadHandler(function() {
-    initialize();
-    gadgets.window.adjustHeight();
-  });
-</script>
-<div id="warning">
-  Save button doesn't work on IE because of lacking SVG support :(
-</div>
-<div id="canvas"></div>
-
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/from_closure_library/css/toolbar.css" />
+  <link rel="stylesheet" href="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/from_closure_library/css/colormenubutton.css" />
+  <link rel="stylesheet" href="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/css/closure-draw.css" />
+  <style type="text/css">
+	body { padding:0; margin:0; }
+	#warning { color:red; text-align: center; margin: 0px 0px 1em; display:none; }
+  </style>
+  <script type="text/javascript" src="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/gadget-min.js"></script>
+</head>
+<body>
+  <script type="text/javascript">
+	gadgets.util.registerOnLoadHandler(function() {
+      initialize();
+      gadgets.window.adjustHeight();
+	});
+  </script>
+  <div id="warning">
+	Save button doesn't work on IE because of lacking SVG support :(
+  </div>
+  <div id="canvas"></div>
+</body>
+</html>
 ]]></Content>
 
 </Module>
