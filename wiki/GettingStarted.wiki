@@ -59,6 +59,8 @@ goog.exportSymbol('initialize', initialize, window);
 
 Open the HTML file in a browser. You should see a Closure Draw widget and can draw diagrams.
 
+http://closure-draw.googlecode.com/svn/wiki/images/tutorial1.png
+
 = Step4: Add a save button =
 
 You can export shapes in SVG format by calling exportSVG method of the widget. Modify tutorial.html as following.
@@ -95,3 +97,5 @@ You can also import the SVG by calling importSVG method. See [http://closure-dra
 = Complete! =
 
 Open the HTML file in a browser again. If you click the save button after drawing some shapes, you shoud see the image in a new window.
+
+http://closure-draw.googlecode.com/svn/wiki/images/tutorial2.png
