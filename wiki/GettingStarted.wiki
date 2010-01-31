@@ -1,3 +1,5 @@
+This tutorial introduces the process of making a web page like the live demo at the [[http://code.google.com/p/closure-draw/ Project Home].
+
 = Step1: Download the Closure Draw =
 
 Download the Closure Draw from the Subversion repository by executing the following command from the command line:
@@ -36,9 +38,9 @@ Save the following HTML in a file called tutorial.html. Place this file in the c
 </html>
 }}}
 
-= Step3: Create a JavaScript file =
+= Step3: Create a !JavaScript file =
 
-Save the following JavaScript in a file called tutorial.js. Place this file in the closure-draw-read-only directory.
+Save the following !JavaScript in a file called tutorial.js. Place this file in the closure-draw-read-only directory.
 
 {{{
 goog.require('closuredraw');
