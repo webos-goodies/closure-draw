@@ -18,6 +18,7 @@ goog.provide('closuredraw.WidgetImportParams');
 goog.require('goog.object');
 goog.require('goog.array');
 goog.require('goog.math.Vec2');
+goog.require('goog.userAgent')
 goog.require('goog.dom');
 goog.require('goog.dom.DomHelper');
 goog.require('goog.dom.xml');
@@ -377,7 +378,7 @@ closuredraw.Widget.prototype.updateCornerHandles = function() {
   if(this.currentShape_ >= 0) {
 	var shape     = this.getShape(this.currentShape_);
 	var center    = new goog.math.Vec2(shape.x, shape.y);
-	var axes      = closuredraw.computeAxes(shape.rot);
+	var axes      = closuredraw.utils.computeAxes(shape.rot);
 	var scaledX   = axes.x.clone().scale(shape.width);
 	var scaledY   = axes.y.clone().scale(shape.height);
 	var sum       = goog.math.Vec2.sum(scaledX, scaledY);
@@ -485,15 +486,16 @@ closuredraw.Widget.prototype.getToolbar = function() {
 };
 
 closuredraw.Widget.prototype.exportSVG = function() {
-  var doc   = goog.dom.xml.createDocument('svg', 'http://www.w3.org/2000/svg');
-  var svgEl = doc.documentElement;
-  svgEl.setAttribute('xmlns:svg', 'http://www.w3.org/2000/svg');
-  svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-  svgEl.setAttribute('xmlns:closuredraw', 'http://webos-goodies.jp/namespace/closuredraw');
-
-  var groupEl = doc.createElement('g');
-  groupEl.setAttribute('style', "display:inline");
-  svgEl.appendChild(groupEl);
+  var doc = goog.dom.xml.loadXml(
+	'<?xml version="1.0" encoding="UTF-8"?>' +
+	  '<svg xmlns="' + closuredraw.XmlNS.SVG +
+	  '" xmlns:svg="' + closuredraw.XmlNS.SVG +
+	  '" xmlns:xlink="' + closuredraw.XmlNS.XLINK +
+	  '" xmlns:closuredraw="' + closuredraw.XmlNS.CLOSUREDRAW +
+	  '"></svg>');
+  var docEl   = doc.documentElement;
+  var groupEl = closuredraw.utils.createElement(doc, closuredraw.XmlNS.SVG, 'g');
+  docEl.appendChild(groupEl);
   goog.array.forEachRight(this.shapes_, function(shape) {
 	var el = shape.exportSVG(doc);
 	if(el) {

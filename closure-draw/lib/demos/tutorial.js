@@ -15,12 +15,11 @@ function initialize() {
   toolbar.addChildAt(saveBtn, 0, true);
   toolbar.addChildAt(new goog.ui.ToolbarSeparator(), 1, true);
   goog.events.listen(saveBtn, goog.ui.Component.EventType.ACTION, function(e) {
-	var svg = canvas.exportSVG().documentElement;
-	//var dec = '<?xml version="1.0" encoding="UTF-8"?>';
-	//var url = goog.crypt.base64.encodeString(dec + goog.dom.xml.serialize(svg));
-	//window.open('data:image/svg+xml;base64,' + url, null);
+	var svg = canvas.exportSVG();
+	//var url = goog.crypt.base64.encodeString(goog.dom.xml.serialize(svg));
+	//window.open('data:image/svg+xml;charset=UTF-8;base64,' + url, null);
 	var url = goog.string.urlEncode(goog.dom.xml.serialize(svg));
-	window.open('data:image/svg+xml,' + url, null);
+	window.open('data:image/svg+xml;charset=UTF-8,' + url, null);
   });
 }
 goog.exportSymbol('initialize', initialize, window);

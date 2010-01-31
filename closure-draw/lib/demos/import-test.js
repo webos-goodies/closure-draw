@@ -9,9 +9,11 @@ function initialize() {
   canvas2.render(goog.dom.$('canvas2'));
 
   goog.events.listen(goog.dom.$('button'), goog.events.EventType.CLICK, function(e) {
-	var svg = goog.dom.xml.loadXml(goog.dom.xml.serialize(canvas1.exportSVG()));
-	canvas2.importSVG(svg);
-	return;
+	var svg = goog.dom.xml.serialize(canvas1.exportSVG());
+	// remove empty namespaces because IE may generate it.
+	svg = svg.replace(/\s*xmlns=\"\"/g, '');
+
+	canvas2.importSVG(goog.dom.xml.loadXml(svg));
   });
 }
 goog.exportSymbol('initialize', initialize, window);
