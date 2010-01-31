@@ -18,6 +18,7 @@
   @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/css/closure-draw.css);
   body { padding:0; margin:0; }
   #svgtext-div { display:none; }
+  #svgtext { margin:0; padding:0; border:none; background-color:#ccc; width:100%; }
 </style>
 <script type="text/javascript" src="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/gadget-min.js"></script>
 <script type="text/javascript">
@@ -27,7 +28,7 @@
   });
 </script>
 <div id="canvas"></div>
-<div id="svgtext-div"><textarea id="svgtext" style="width:90%;" rows="10"></textarea></div>
+<div id="svgtext-div"><textarea id="svgtext" rows="10"></textarea></div>
 
 ]]></Content>
 

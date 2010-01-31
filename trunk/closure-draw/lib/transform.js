@@ -25,7 +25,7 @@ goog.require('goog.math.Vec2');
  */
 closuredraw.Transform = function(x, y, rot) {
   this.origin = new goog.math.Vec2(x, y);
-  this.axes   = closuredraw.computeAxes(rot);
+  this.axes   = closuredraw.utils.computeAxes(rot);
 };
 
 closuredraw.Transform.prototype.transform = function(pt) {

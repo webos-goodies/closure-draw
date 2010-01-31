@@ -215,7 +215,7 @@ closuredraw.StrokeAndFillShape.prototype.setFill = function(fill) {
 closuredraw.StrokeAndFillShape.prototype.exportSVG = function(doc, element) {
   if(element) {
 	if(this.stroke_) {
-	  element.setAttribute('stroke',       this.stroke_.getColor());
+	  element.setAttribute('stroke', this.stroke_.getColor());
 	  element.setAttribute('stroke-width', this.stroke_.getWidth());
 	} else {
 	  element.setAttribute('stroke', 'none');
@@ -296,7 +296,7 @@ closuredraw.Rect.prototype.contains = function(x, y) {
 };
 
 closuredraw.Rect.prototype.exportSVG = function(doc, element) {
-  element = element || doc.createElement('rect');
+  element = element || closuredraw.utils.createElement(doc, closuredraw.XmlNS.SVG, 'rect');
   element.setAttribute('x',      -this.width);
   element.setAttribute('y',      -this.height);
   element.setAttribute('width',  this.width  * 2);
@@ -365,7 +365,7 @@ closuredraw.Ellipse.prototype.contains = function(x, y) {
 };
 
 closuredraw.Ellipse.prototype.exportSVG = function(doc, element) {
-  element = element || doc.createElement('ellipse');
+  element = element || closuredraw.utils.createElement(doc, closuredraw.XmlNS.SVG, 'ellipse');
   element.setAttribute('cx', 0);
   element.setAttribute('cy', 0);
   element.setAttribute('rx', this.width);
@@ -501,7 +501,7 @@ closuredraw.Path.prototype.exportSVG = function(doc, element) {
 	}
   });
 
-  element = element || doc.createElement('path');
+  element = element || closuredraw.utils.createElement(doc, closuredraw.XmlNS.SVG, 'path');
   element.setAttribute('d', svgPath.join(' '));
   element = closuredraw.Path.superClass_.exportSVG.call(this, doc, element);
 
@@ -726,12 +726,13 @@ closuredraw.Text.prototype.setText = function(text) {
 
 closuredraw.Text.prototype.exportSVG = function(doc, element) {
   var fontSize = this.font_.size;
-  element = element || doc.createElement('text');
-  element.setAttribute('x',           0);
-  element.setAttribute('y',           Math.round(Math.round(fontSize*0.85) - fontSize/2));
-  element.setAttribute('font-family', this.font_.family);
-  element.setAttribute('font-size',   fontSize);
-  element.setAttribute('text-anchor', 'middle');
+  var y        = Math.round(Math.round(fontSize*0.85) - fontSize/2);
+  element = element || closuredraw.utils.createElement(doc, closuredraw.XmlNS.SVG, 'text');
+  element.setAttribute('x',                  0);
+  element.setAttribute('y',                  y);
+  element.setAttribute('font-family',        this.font_.family);
+  element.setAttribute('font-size',          fontSize);
+  element.setAttribute('text-anchor',        'middle');
   element.setAttribute('closuredraw:width',  this.width);
   element.setAttribute('closuredraw:height', this.height);
   element.appendChild(doc.createTextNode(this.text_));
@@ -810,14 +811,14 @@ closuredraw.Image.prototype.reconstruct = function() {
 };
 
 closuredraw.Image.prototype.exportSVG = function(doc, element) {
-  element = element || doc.createElement('image');
-  element.setAttribute('x',                   -this.width);
-  element.setAttribute('y',                   -this.height);
-  element.setAttribute('width',               this.width  * 2);
-  element.setAttribute('height',              this.height * 2);
-  element.setAttribute('image-rendering',     'optimizeQuality');
+  element = element || closuredraw.utils.createElement(doc, closuredraw.XmlNS.SVG, 'image');
+  element.setAttribute('x',         -this.width);
+  element.setAttribute('y',         -this.height);
+  element.setAttribute('width',      this.width  * 2);
+  element.setAttribute('height',     this.height * 2);
+  element.setAttribute('xlink:href', this.url_);
+  element.setAttribute('image-rendering', 'optimizeQuality');
   element.setAttribute('preserveAspectRatio', 'none');
-  element.setAttribute('xlink:href',          this.url_);
   return closuredraw.Image.superClass_.exportSVG.call(this, doc, element);
 };
 
