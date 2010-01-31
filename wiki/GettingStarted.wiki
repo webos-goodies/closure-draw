@@ -1,6 +1,4 @@
-= Getting Started =
-
-== Step1: Download the Closure Draw ==
+= Step1: Download the Closure Draw =
 
 Download the Closure Draw from the Subversion repository by executing the following command from the command line:
 
@@ -14,7 +12,7 @@ This command also downloads the Closure Library too. If you already have it, add
 svn checkout --ignore-externals http://closure-draw.googlecode.com/svn/trunk/ closure-draw-read-only
 }}}
 
-== Step2: Create an HTML file ==
+= Step2: Create an HTML file =
 
 Save the following HTML in a file called tutorial.html. Place this file in the closure-draw-read-only directory.
 
@@ -38,7 +36,7 @@ Save the following HTML in a file called tutorial.html. Place this file in the c
 </html>
 }}}
 
-== Step3: Create a JavaScript file ==
+= Step3: Create a JavaScript file =
 
 Save the following JavaScript in a file called tutorial.js. Place this file in the closure-draw-read-only directory.
 
@@ -46,17 +44,22 @@ Save the following JavaScript in a file called tutorial.js. Place this file in t
 goog.require('closuredraw');
 
 function initialize() {
+  // Create a widget
   var canvas = new closuredraw.Widget(512, 512);
+
+  // and add it to the document tree.
   canvas.render(goog.dom.$('canvas'));
 }
 
-// This line prevents the name "initialize" to shorten by Closure Compiler.
+// This line prevents the name "initialize" from shortening by Closure Compiler.
 goog.exportSymbol('initialize', initialize, window);
 }}}
 
 Open the HTML file in a browser. You should see a Closure Draw widget and can draw diagrams.
 
-== Step4: Add a save button ==
+= Step4: Add a save button =
+
+You can export shapes in SVG format by calling exportSVG method of the widget. Modify tutorial.html as following.
 
 {{{
 goog.require('goog.dom.xml');
@@ -80,9 +83,13 @@ function initialize() {
     window.open('data:image/svg+xml;charset=UTF-8,' + url, null);
   });
 }
-
-// This line prevents the name "initialize" to shorten by Closure Compiler.
 goog.exportSymbol('initialize', initialize, window);
 }}}
 
-== Complete! ==
+You can also import the SVG by calling importSVG method. See [http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/import-test-min.html import-test demo] in the repository for detail.
+
+*Note:* The save button doesn't work on IE since it still doesn't support SVG and data scheme. You can do the same thing using server-side rendering.
+
+= Complete! =
+
+Open the HTML file in a browser again. If you click the save button after drawing some shapes, you shoud see the image in a new window.
