@@ -7,10 +7,6 @@ goog.require('goog.ui.ToolbarSeparator');
 goog.require('closuredraw');
 
 function initialize() {
-  if(goog.userAgent.IE) {
-	goog.dom.$('warning').style.display = 'block';
-  }
-
   var canvas = new closuredraw.Widget(512, 512);
   canvas.render(goog.dom.$('canvas'));
 
