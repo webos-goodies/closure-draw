@@ -92,7 +92,7 @@ goog.exportSymbol('initialize', initialize, window);
 
 You can also import the SVG by calling importSVG method. See [http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/import-test-min.html import-test demo] in the repository for detail.
 
-*Note:* The save button doesn't work on IE since it still doesn't support SVG and data scheme. You can do the same thing using server-side rendering.
+*Note:* The save button doesn't work on IE since it still doesn't support SVG and data scheme.
 
 = Complete! =
 
