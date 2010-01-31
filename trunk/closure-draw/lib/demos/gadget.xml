@@ -23,12 +23,18 @@
   </style>
   <script type="text/javascript" src="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/gadget-min.js"></script>
 </head>
-<body>
+<body onload="initializeGadget();">
   <script type="text/javascript">
+	/*
 	gadgets.util.registerOnLoadHandler(function() {
       initialize();
       gadgets.window.adjustHeight();
 	});
+	*/
+	function initializeGadget() {
+      initialize();
+      gadgets.window.adjustHeight();
+	}
   </script>
   <div id="warning">
 	Save button doesn't work on IE because of lacking SVG support :(
