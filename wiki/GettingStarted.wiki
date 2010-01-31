@@ -46,7 +46,7 @@ Save the following !JavaScript in a file called tutorial.js. Place this file in 
 goog.require('closuredraw');
 
 function initialize() {
-  // Create a widget
+  // Create a widget (arguments are the size of the drawing area).
   var canvas = new closuredraw.Widget(512, 512);
 
   // and add it to the document tree.
