@@ -508,11 +508,18 @@ closuredraw.Widget.prototype.exportSVG = function() {
 
 closuredraw.Widget.prototype.importSVG = function(doc) {
   this.deleteAllShapes();
-  var elements;
+  var elements = [];
   try {
 	elements = goog.dom.xml.selectNodes(doc, 'descendant::svg:g/node()');
-  } catch(e) {
-	elements = goog.dom.xml.selectNodes(doc, 'descendant::g/node()');
+  } catch(e) {}
+  if(elements.length <= 0) {
+	elements = [];
+	goog.array.forEach(doc.documentElement.getElementsByTagName('g'), function(group) {
+	  goog.array.forEach(group.childNodes, function(el) {
+		if(el.nodeType == 1)
+		  elements[elements.length] = el;
+	  });
+	});
   }
   goog.array.forEach(elements, function(element) {
 	var klass = closuredraw.AbstractShape.SvgShapes[element.nodeName];
