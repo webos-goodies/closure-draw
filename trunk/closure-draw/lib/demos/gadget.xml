@@ -22,10 +22,19 @@
 </style>
 <script type="text/javascript" src="http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/gadget-min.js"></script>
 <script type="text/javascript">
-  gadgets.util.registerOnLoadHandler(function() {
+  function gadgetInit() {
     initialize();
-    gadgets.window.adjustHeight();
-  });
+    try {
+      gadgets.window.adjustHeight();
+    } catch(e) {
+      _IG_AdjustIFrameHeight();
+    }
+  }
+  try {
+    gadgets.util.registerOnLoadHandler(gadgetInit);
+  } catch(e) {
+    _IG_RegisterOnloadHandler(gadgetInit);
+  }
 </script>
 <div id="canvas"></div>
 <div id="svgtext-div"><textarea id="svgtext" rows="10"></textarea></div>
