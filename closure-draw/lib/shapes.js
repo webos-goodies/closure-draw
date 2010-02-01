@@ -140,11 +140,12 @@ closuredraw.AbstractShape.prototype.exportSVG = function(doc, element) {
 closuredraw.AbstractShape.prototype.importSVG_ = function(doc, element, opt_defer) {
   this.x = this.y = this.rot = 0;
   var transform = element.getAttribute('transform');
-  if(/translate\s*\(([^,]+),([^\)]+)\)/.exec(transform)) {
-	this.x = parseFloat(RegExp.$1);
-	this.y = parseFloat(RegExp.$2);
+  if(/translate\s*\(([^\)]+)/.exec(transform)) {
+	var params = RegExp.$1.split(',');
+	this.x = parseFloat(params[0] || 0);
+	this.y = parseFloat(params[1] || 0);
   }
-  if(/rotate\s*\(\s*([^\s\)]+)/.exec(transform)) {
+  if(/rotate\s*\(([^\s\)]+)/.exec(transform)) {
 	this.rot = parseFloat(RegExp.$1);
   }
   if(!opt_defer) {
