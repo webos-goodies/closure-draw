@@ -1,0 +1,21 @@
+.closuredraw-icon {
+    height: 16px;
+    width: 16px;
+    background-image: url(icons.png);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+.closuredraw-mode-move    { background-position: 0px -16px; }
+.closuredraw-mode-modify  { background-position: 0px -32px; }
+.closuredraw-mode-rect    { background-position: 0px -48px; }
+.closuredraw-mode-ellipse { background-position: 0px -64px; }
+.closuredraw-mode-path    { background-position: 0px -80px; }
+.closuredraw-mode-text    { background-position: 0px -96px; }
+.closuredraw-bring-up     { background-position: 0px -112px; }
+.closuredraw-bring-down   { background-position: 0px -128px; }
+.closuredraw-bring-top    { background-position: 0px -144px; }
+.closuredraw-bring-bottom { background-position: 0px -160px; }
+.closuredraw-delete       { background-position: 0px -176px; }
+.closuredraw-color-stroke { background-position: 0px -192px; }
+.closuredraw-color-fill   { background-position: 0px -208px; }
+.closuredraw-insert-image { background-position: 0px -224px; }
