@@ -208,6 +208,7 @@ closuredraw.Toolbar.prototype.onImageBtn = function(e) {
 	var size  = owner.getGraphics().getSize();
 	var shape = new closuredraw.Image(owner, url);
 	shape.setTransform(size.width/2, size.height/2, size.width/4, size.height/4, 0);
+	owner.setCurrentShapeIndex(-1);
 	owner.addShape(shape);
 	owner.setCurrentShapeIndex(0);
   }
