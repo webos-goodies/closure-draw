@@ -19,3 +19,49 @@
 .closuredraw-color-stroke { background-position: 0px -192px; }
 .closuredraw-color-fill   { background-position: 0px -208px; }
 .closuredraw-insert-image { background-position: 0px -224px; }
+
+.closuredraw-modal-bg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #FFF;
+}
+
+.closuredraw-modal {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 300px;
+    background-color: #AAF;
+    border: 2px solid #99c0ff;
+}
+
+.closuredraw-modal-title {
+    position:relative;
+    background: #C3D9FF;
+    padding: 4px;
+    font: bold 11px verdana;
+    cursor: default;
+}
+
+.closuredraw-modal-content {
+    background: #E8EEF7;
+    padding: 12px 18px 12px 18px;  font: normal 12px verdana;
+    font: normal 12px verdana;
+}
+
+.closuredraw-modal-userInput {
+    font: normal 12px verdana;
+    width: 90%;
+}
+
+.closuredraw-modal-buttons {
+    background: #E8EEF7;
+    padding: 4px;
+    font: normal 12px verdana;
+    text-align: right;
+}
+
+.closuredraw-modal-buttons button {
+    margin: 5px;
+}
