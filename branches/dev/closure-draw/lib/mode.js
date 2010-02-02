@@ -216,8 +216,8 @@ closuredraw.ModifyMode.prototype.onMouseDownCanvas = function(e) {
 		if(vertex) {
 		  this.startPt_ = pt;
 		  this.basePt_  = shape.transform(new goog.math.Vec2(vertex.x, vertex.y));
-		  owner.beginDrag(e, this.onDragVertex_, this.onDragVertexEnd_, this);
-		  this.editingVertex_ = vindex;
+		  if(owner.beginDrag(e, this.onDragVertex_, this.onDragVertexEnd_, this))
+			this.editingVertex_ = vindex;
 		}
 	  }
 	} else {
@@ -228,9 +228,10 @@ closuredraw.ModifyMode.prototype.onMouseDownCanvas = function(e) {
 		var shape     = owner.getShape(index);
 		this.startPt_ = pt;
 		this.basePt_  = new goog.math.Vec2(shape.x, shape.y);
-		owner.beginDrag(e, this.onDragShape_, this.onDragShapeEnd_, this);
-		if(index != this.editingIndex_ && shape.isPath())
-		  this.recreateVertexHandles_(shape);
+		if(owner.beginDrag(e, this.onDragShape_, this.onDragShapeEnd_, this)) {
+		  if(index != this.editingIndex_ && shape.isPath())
+			this.recreateVertexHandles_(shape);
+		}
 	  }
 	  this.editingIndex_ = index;
 	}
@@ -480,7 +481,8 @@ closuredraw.TextMode.prototype.onMouseDownCanvas = function(e) {
   if(!owner.dragging()) {
 	this.startPt_ = owner.clientToCanvas(e.clientX, e.clientY);
 	var handle    = owner.addHandleShape('newtext', 'newtext');
-	owner.beginDrag(e, this.onDrag_, this.onDragEnd_, this);
+	if(handle)
+	  owner.beginDrag(e, this.onDrag_, this.onDragEnd_, this);
   }
 };
 
@@ -507,9 +509,11 @@ closuredraw.TextMode.prototype.onDragEnd_ = function(e) {
   if(goog.math.Vec2.squaredDistance(pt1, pt2) < 3*3 &&
 	 (index = owner.getShapeIndexAt(pt2.x, pt2.y)) >= 0 &&
 	 (shape = owner.getShape(index)).isText()) {
-	var text = prompt("Specify text to display", shape.getText());
-	if(text)
-	  shape.setText(text);
+	owner.endDrag();
+	owner.showPrompt("Specify text to display", shape.getText(), function(text) {
+	  if(text)
+		shape.setText(text);
+	}, this);
   } else {
 	var b = closuredraw.TextMode.computeTextBounds_(pt1, pt2);
 	owner.removeAllHandleShapes();
@@ -519,17 +523,18 @@ closuredraw.TextMode.prototype.onDragEnd_ = function(e) {
 	  b.left  -= 8;
 	  b.right += 8;
 	}
-	var text = prompt("Specify text to display");
-	if(text) {
-	  var font  = owner.getCurrentFont();
-	  b.bottom  = b.top + font.size;
-	  var shape = new closuredraw.Text(
-		owner, owner.getCurrentStroke(), owner.getCurrentFill(), font, text);
-	  owner.addShape(shape);
-	  shape.setTransform((b.right + b.left) / 2, (b.bottom + b.top) / 2,
-						 (b.right - b.left) / 2, (b.bottom - b.top) / 2, 0);
-	  owner.setCurrentShapeIndex(0);
-	}
+	owner.showPrompt("Specify text to display", '', function(text) {
+	  if(text) {
+		var font  = owner.getCurrentFont();
+		b.bottom  = b.top + font.size;
+		var shape = new closuredraw.Text(
+		  owner, owner.getCurrentStroke(), owner.getCurrentFill(), font, text);
+		owner.addShape(shape);
+		shape.setTransform((b.right + b.left) / 2, (b.bottom + b.top) / 2,
+						   (b.right - b.left) / 2, (b.bottom - b.top) / 2, 0);
+		owner.setCurrentShapeIndex(0);
+	  }
+	}, this);
   }
 };
 
