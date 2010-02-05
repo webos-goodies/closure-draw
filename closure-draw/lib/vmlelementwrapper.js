@@ -22,12 +22,18 @@ goog.require('goog.graphics.VmlGraphics');
  * @constructor
  * @extends {goog.Disposable}
  */
-closuredraw.VmlElementWrapper = function(graphics, createProc, scope) {
-  this.group_   = graphics.createGroup();
-  this.element_ = createProc.call(scope, this.group_);
-  this.x_       = 0;
-  this.y_       = 0;
-  this.rot_     = 0;
+closuredraw.VmlElementWrapper = function(group, createProc, scope) {
+  var graphics = group.getGraphics();
+  if(graphics instanceof goog.graphics.VmlGraphics) {
+	this.group_   = graphics.createGroup(group);
+	this.element_ = createProc.call(scope, graphics, this.group_, true);
+	this.x_       = 0;
+	this.y_       = 0;
+	this.rot_     = 0;
+	this.usingVml = true;
+  } else {
+	return createProc.call(scope, graphics, group, false);
+  }
 };
 
 closuredraw.VmlElementWrapper.prototype.remove = function() {

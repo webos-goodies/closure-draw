@@ -60,7 +60,7 @@ closuredraw.Widget = function(width, height, opt_domHelper) {
   this.currentFont_   = new goog.graphics.Font(16, 'sans-serif');
   this.handleStroke_  = new goog.graphics.Stroke(1, '#000000');
   this.handleFill_    = new goog.graphics.SolidFill('#ffffff', 0.8);
-  this.promptDialogs_ = [];
+  this.promptDialogs_ = {};
   this.promptScope_   = null;
   this.promptHandler_ = null;
 
@@ -78,8 +78,10 @@ closuredraw.Widget = function(width, height, opt_domHelper) {
   this.toolbar_.setFont(this.currentFont_);
 
   // create a graphics object
-  this.canvasEl_ = null;
-  this.graphics_ = goog.graphics.createGraphics(width, height, opt_domHelper);
+  this.canvasEl_    = null;
+  this.graphics_    = goog.graphics.createGraphics(width, height, opt_domHelper);
+  this.shapeGroup_  = null;
+  this.handleGroup_ = null;
   this.addChild(this.graphics_, false);
 };
 goog.inherits(closuredraw.Widget, goog.ui.Component);
@@ -122,6 +124,11 @@ closuredraw.Widget.prototype.decorateInternal = function(element) {
 closuredraw.Widget.prototype.enterDocument = function() {
   closuredraw.Widget.superClass_.enterDocument.call(this);
 
+  // create groups of each shape type.
+  this.shapeGroup_  = this.graphics_.createGroup();
+  this.handleGroup_ = this.graphics_.createGroup();
+
+  // regist event handlers.
   this.eventHandler_.listen(
 	this.canvasEl_, goog.events.EventType.MOUSEDOWN, this.onMouseDownCanvas_);
   this.eventHandler_.listen(
@@ -132,12 +139,13 @@ closuredraw.Widget.prototype.enterDocument = function() {
 	  this.canvasEl_, goog.events.EventType.DBLCLICK, this.onMouseDownCanvas_);
   }
 
+  // initialize the current mode.
   this.getCurrentMode().onEnter(this.currentShape_);
 };
 
 closuredraw.Widget.prototype.exitDocument = function() {
   this.freeze_ = false;
-  if(this.handleShapes_) this.removeAllHandleShapes();
+  this.graphics_.clear();
   if(this.eventHandler_) this.eventHandler_.removeAll();
   closuredraw.Widget.superClass_.exitDocument.call(this);
 };
@@ -147,9 +155,9 @@ closuredraw.Widget.prototype.disposeInternal = function() {
   if(this.eventHandler_) this.eventHandler_.dispose();
   if(this.dragger_)      this.dragger_.dispose();
   if(this.graphics_)     this.graphics_.dispose();
-  goog.array.forEach(this.promptDialogs_ ,function(prompt) {
-	prompt.dispose();
-  });
+  if(this.promptDialogs_) {
+	goog.object.forEach(this.promptDialogs_ ,function(prompt) { prompt.dispose(); });
+  }
   this.modes_         = null;
   this.eventHandler_  = null;
   this.handleShapes_  = null;
@@ -164,6 +172,8 @@ closuredraw.Widget.prototype.disposeInternal = function() {
   this.toolbar_       = null;
   this.canvasEl_      = null;
   this.graphics_      = null;
+  this.shapeGroup_    = null;
+  this.handleGroup_   = null;
   this.promptDialogs_ = null;
   this.promptScope_   = null;
   this.promptHandler_ = null;
@@ -196,6 +206,10 @@ closuredraw.Widget.prototype.getGraphics = function() {
   return this.graphics_;
 };
 
+closuredraw.Widget.prototype.getShapeGroup = function() {
+  return this.shapeGroup_;
+};
+
 closuredraw.Widget.prototype.clientToCanvas = function(x, y) {
   var bounds = this.canvasEl_.getBoundingClientRect();
   return new goog.math.Vec2(x - bounds.left, y - bounds.top);
@@ -224,8 +238,9 @@ closuredraw.Widget.prototype.addShape = function(shape) {
 };
 
 closuredraw.Widget.prototype.reconstructShapes = function() {
-  this.graphics_.clear();
+  this.shapeGroup_.clear();
   goog.array.forEachRight(this.shapes_, function(shape) {
+	shape.detach();
 	shape.reconstruct();
   });
 };
@@ -263,6 +278,7 @@ closuredraw.Widget.prototype.deleteShape = function(index) {
 	var shape = this.getShape(index);
 	if(shape) {
 	  goog.array.removeAt(this.shapes_, index);
+	  shape.remove();
 	  shape.dispose();
 	}
   }
@@ -277,9 +293,12 @@ closuredraw.Widget.prototype.deleteAllShapes_ = function() {
 	var shapes = this.shapes_, shape;
 	for(var i = 0, l = shapes.length ; i < l ; ++i) {
 	  shape = shapes[i];
-	  if(shape)
+	  if(shape) {
+		shape.detach();
 		shape.dispose();
+	  }
 	}
+	this.shapeGroup_.clear();
 	this.shapes_ = [];
   }
 };
@@ -309,36 +328,27 @@ closuredraw.Widget.prototype.getHandleShape = function(label) {
 closuredraw.Widget.prototype.addHandleShape = function(label, type) {
   if(this.freeze_) return null;
 
-  var g        = this.graphics_;
-  var usingVml = g instanceof goog.graphics.VmlGraphics;
-  var shape    = null;
+  var gr    = this.handleGroup_;
+  var shape = null;
 
   switch(type) {
   case 'corner':
   case 'vertex':
-	if(usingVml) {
-	  shape = new closuredraw.VmlElementWrapper(g, function(group) {
-		return g.drawRect(-3, -3, 6, 6, this.handleStroke_, this.handleFill_, group);
-	  }, this);
-	  shape.setPosition(-3, -3); shape.setSize(6, 6);
-	} else {
-	  shape = g.drawRect(-3, -3, 6, 6, this.handleStroke_, this.handleFill_);
-	}
+	shape = new closuredraw.VmlElementWrapper(gr, function(g, group, usingVml) {
+	  return g.drawRect(-3, -3, 6, 6, this.handleStroke_, this.handleFill_, group);
+	}, this);
+	if(shape.usingVml) { shape.setPosition(-3, -3); shape.setSize(6, 6); }
 	break;
 
   case 'rotation':
-	if(usingVml) {
-	  shape = new closuredraw.VmlElementWrapper(g, function(group) {
-		return g.drawCircle(0, 0, 4, this.handleStroke_, this.handleFill_, group);
-	  }, this);
-	  shape.setRadius(4, 4);
-	} else {
-	  shape = g.drawCircle(0, 0, 4, this.handleStroke_, this.handleFill_);
-	}
+	shape = new closuredraw.VmlElementWrapper(gr, function(g, group, usingVml) {
+	  return g.drawCircle(0, 0, 4, this.handleStroke_, this.handleFill_, group);
+	}, this);
+	if(shape.usingVml) { shape.setRadius(4, 4); }
 	break;
 
   case 'newtext':
-	shape = g.drawRect(0, 0, 0, 0, this.handleStroke_, this.handleFill_);
+	shape = this.graphics_.drawRect(0, 0, 0, 0, this.handleStroke_, this.handleFill_, gr);
 	break;
   }
 
@@ -348,7 +358,7 @@ closuredraw.Widget.prototype.addHandleShape = function(label, type) {
 	  if(handle.element instanceof closuredraw.VmlElementWrapper)
 		handle.element.remove();
 	  else
-		g.removeElement(handle.element);
+		this.graphics_.removeElement(handle.element);
 	}
 	this.handleShapes_[label] = { x:0, y:0, element:shape };
   }
@@ -367,15 +377,7 @@ closuredraw.Widget.prototype.transformHandleShape = function(label, x, y, rot, r
 
 closuredraw.Widget.prototype.removeAllHandleShapes = function() {
   if(!this.freeze_) {
-	var usingVml = this.graphics_ instanceof goog.graphics.VmlGraphics;
-	goog.object.forEach(this.handleShapes_, function(handle) {
-	  if(handle) {
-		if(handle.element instanceof goog.graphics.Element)
-		  this.graphics_.removeElement(handle.element);
-		else if(handle.element instanceof closuredraw.VmlElementWrapper)
-		  handle.element.remove();
-	  }
-	}, this);
+	this.handleGroup_.clear();
 	this.handleShapes_ = {};
   }
 };
