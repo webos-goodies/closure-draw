@@ -267,13 +267,11 @@ closuredraw.AbstractShape.SvgShapes['rect'] = closuredraw.Rect;
 closuredraw.Rect.prototype.recreateElement = function() {
   var gr = this.owner_.getShapeGroup(), w = this.width, h = this.height;
   this.remove();
-  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group, usingVml) {
+  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group) {
 	return g.drawRect(-w, -h, w*2, h*2, this.stroke_, this.fill_, group);
   }, this);
-  if(this.element_.usingVml) {
-	this.element_.setPosition(-w, -h);
-	this.element_.setSize(w*2, h*2);
-  }
+  this.element_.setPosition(-w, -h);
+  this.element_.setSize(w*2, h*2);
 };
 
 closuredraw.Rect.prototype.contains = function(x, y) {
@@ -337,10 +335,10 @@ goog.inherits(closuredraw.Ellipse, closuredraw.StrokeAndFillShape);
 closuredraw.Ellipse.prototype.recreateElement = function() {
   var gr = this.owner_.getShapeGroup();
   this.remove();
-  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group, usingVml) {
+  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group) {
 	return g.drawEllipse(0, 0, this.width, this.height, this.stroke_, this.fill_, group);
   }, this);
-  if(this.element_.usingVml) { this.element_.setRadius(this.width, this.height); }
+  this.element_.setRadius(this.width, this.height);
 };
 closuredraw.AbstractShape.SvgShapes['ellipse'] = closuredraw.Ellipse;
 

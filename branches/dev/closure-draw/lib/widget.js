@@ -334,17 +334,17 @@ closuredraw.Widget.prototype.addHandleShape = function(label, type) {
   switch(type) {
   case 'corner':
   case 'vertex':
-	shape = new closuredraw.VmlElementWrapper(gr, function(g, group, usingVml) {
+	shape = new closuredraw.VmlElementWrapper(gr, function(g, group) {
 	  return g.drawRect(-3, -3, 6, 6, this.handleStroke_, this.handleFill_, group);
 	}, this);
-	if(shape.usingVml) { shape.setPosition(-3, -3); shape.setSize(6, 6); }
+	shape.setPosition(-3, -3); shape.setSize(6, 6);
 	break;
 
   case 'rotation':
-	shape = new closuredraw.VmlElementWrapper(gr, function(g, group, usingVml) {
+	shape = new closuredraw.VmlElementWrapper(gr, function(g, group) {
 	  return g.drawCircle(0, 0, 4, this.handleStroke_, this.handleFill_, group);
 	}, this);
-	if(shape.usingVml) { shape.setRadius(4, 4); }
+	shape.setRadius(4, 4);
 	break;
 
   case 'newtext':
