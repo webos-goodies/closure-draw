@@ -1,0 +1,47 @@
+require 'rake/clean'
+
+$KCODE = 'U'
+
+CLOSURE_LIB_DIR  = "../../closure-library/closure"
+CLOSURE_DRAW_DIR = ".."
+
+PYTHON           = "python"
+CALCDEPS         = File.join(CLOSURE_LIB_DIR,  "bin/calcdeps.py")
+CLOSURE_COMPILER = File.join(CLOSURE_DRAW_DIR, "bin/compiler.jar")
+
+DEMOS_DIR        = "demos"
+DEMO_SRCS        = FileList[File.join(DEMOS_DIR, "*.js")].exclude("**/*-min.js")
+DEMO_TARGETS     = DEMO_SRCS.gsub(/\.js$/u, "-min.js")
+
+CLOBBER.include(DEMO_TARGETS)
+CLOBBER.include(DEMO_TARGETS.gsub(/\.js$/u, "-map"))
+
+def execCmd(cmd)
+  stdin  = ''
+  stdout = ''
+  IO.popen(cmd, 'r+') do |pipe|
+    pipe.write(stdin)
+    pipe.close_write
+    stdout = pipe.read
+  end
+  stdout
+end
+
+def compile(fname)
+  execCmd(["#{PYTHON} #{CALCDEPS} -i #{fname}",
+           "  -o compiled -c #{CLOSURE_COMPILER}",
+           " -p #{CLOSURE_LIB_DIR}/goog -p #{CLOSURE_DRAW_DIR}/lib",
+           " -f \"--define=goog.DEBUG=false\"",
+           #" -f \"--create_source_map=#{fname.gsub(/\..+/u, '')}-min-map\"",
+           " -f \"--compilation_level=ADVANCED_OPTIMIZATIONS\""
+          ].join(''))
+end
+
+task :demos => DEMO_TARGETS
+
+rule(/-min\.js$/u => [proc {|n| n.gsub(/-min\.js$/u, ".js") }]) do |t|
+  compiled = compile(t.source)
+  File.open(t.name, 'w') do |file|
+    file.write(compiled)
+  end
+end
