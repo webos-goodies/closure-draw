@@ -70,6 +70,10 @@ closuredraw.Toolbar = function(modes) {
   goog.array.forEach(closuredraw.Toolbar.FontSizeList, function(size){
 	this.fontSize_.addItem(new goog.ui.MenuItem(size+'px'));
   }, this);
+
+  // prohibit the toolbar from being focused.
+  this.setFocusable(false);
+  this.setFocusableChildrenAllowed(false);
 };
 goog.inherits(closuredraw.Toolbar, goog.ui.Toolbar);
 
