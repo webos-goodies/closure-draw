@@ -1,0 +1,7 @@
+@import "../from_closure_library/css/common.css";
+@import "../from_closure_library/css/toolbar.css";
+@import "../from_closure_library/css/menus.css";
+@import "../from_closure_library/css/colormenubutton.css";
+@import "../from_closure_library/css/palette.css";
+@import "../from_closure_library/css/colorpicker-simplegrid.css";
+@import "closure-draw.css"
