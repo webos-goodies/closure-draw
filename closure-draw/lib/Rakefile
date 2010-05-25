@@ -1,3 +1,5 @@
+# -*- mode:ruby -*-
+
 require 'rake/clean'
 
 $KCODE = 'U'
@@ -29,12 +31,13 @@ end
 
 def compile(fname)
   execCmd(["#{PYTHON} #{CALCDEPS} -i #{fname}",
-           "  -o compiled -c #{CLOSURE_COMPILER}",
-           " -p #{CLOSURE_LIB_DIR}/goog -p #{CLOSURE_DRAW_DIR}/lib",
-           " -f \"--define=goog.DEBUG=false\"",
-           #" -f \"--create_source_map=#{fname.gsub(/\..+/u, '')}-min-map\"",
-           " -f \"--compilation_level=ADVANCED_OPTIMIZATIONS\""
-          ].join(''))
+           "-o compiled -c #{CLOSURE_COMPILER}",
+           "-p #{CLOSURE_LIB_DIR}/goog -p #{CLOSURE_DRAW_DIR}/lib",
+           "-f \"--define=goog.DEBUG=false\"",
+           #"-f \"--create_source_map=#{fname.gsub(/\..+/u, '')}-min-map\"",
+           "-f \"--compilation_level=ADVANCED_OPTIMIZATIONS\"",
+           "-f \"--output_wrapper=(function(){%output%})();\""
+          ].join(' '))
 end
 
 task :demos => DEMO_TARGETS
