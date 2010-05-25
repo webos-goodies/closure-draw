@@ -13,7 +13,7 @@
 <Content type="html" view="home,profile,default,canvas"><![CDATA[
 
 <style type="text/css">
-  @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/from_closure_library/css/all.css);
+  @import url(http://closure-draw.googlecode.com/svn/trunk/closure-draw/lib/demos/css/all.css);
   body { padding:0; margin:0; }
   #svgtext-div { display:none; }
   #svgtext { margin:0; padding:0; border:none; background-color:#ccc; width:100%; }
