@@ -70,6 +70,10 @@ closuredraw.Toolbar = function(modes) {
   goog.array.forEach(closuredraw.Toolbar.FontSizeList, function(size){
 	this.fontSize_.addItem(new goog.ui.MenuItem(size+'px'));
   }, this);
+
+  // prohibit the toolbar from being focused.
+  this.setFocusable(false);
+  this.setFocusableChildrenAllowed(false);
 };
 goog.inherits(closuredraw.Toolbar, goog.ui.Toolbar);
 
@@ -202,15 +206,17 @@ closuredraw.Toolbar.prototype.onChangeMode = function(e) {
 
 closuredraw.Toolbar.prototype.onImageBtn = function(e) {
   var owner = this.getParent();
-  var url = prompt('Image URL:', 'http://');
-  owner.setModeIndex(0, true);
-  if(url) {
-	var size  = owner.getGraphics().getSize();
-	var shape = new closuredraw.Image(owner, url);
-	shape.setTransform(size.width/2, size.height/2, size.width/4, size.height/4, 0);
-	owner.addShape(shape);
-	owner.setCurrentShapeIndex(0);
-  }
+  owner.showPrompt('Image URL:', 'http://', function(url) {
+	owner.setModeIndex(0, true);
+	if(url) {
+	  var size  = owner.getGraphics().getSize();
+	  var shape = new closuredraw.Image(owner, url);
+	  shape.setTransform(size.width/2, size.height/2, size.width/4, size.height/4, 0);
+	  owner.setCurrentShapeIndex(-1);
+	  owner.addShape(shape);
+	  owner.setCurrentShapeIndex(0);
+	}
+  }, this);
 };
 
 closuredraw.Toolbar.prototype.onChangeStroke = function(e) {
@@ -239,19 +245,20 @@ closuredraw.Toolbar.prototype.onDeleteBtn = function(e) {
 };
 
 closuredraw.Toolbar.prototype.onUpBtn = function(e) {
-  this.getParent().moveCurrentShapeUp();
+  this.getParent().bringTo('-1');
 };
 
 closuredraw.Toolbar.prototype.onDownBtn = function(e) {
-  this.getParent().moveCurrentShapeDown();
+  this.getParent().bringTo('+1');
 };
 
 closuredraw.Toolbar.prototype.onTopBtn = function(e) {
-  this.getParent().moveCurrentShapeToTop();
+  this.getParent().bringTo('0');
 };
 
 closuredraw.Toolbar.prototype.onBottomBtn = function(e) {
-  this.getParent().moveCurrentShapeToBottom();
+  var widget = this.getParent();
+  widget.bringTo(widget.getShapeCount());
 };
 
 //----------------------------------------------------------
