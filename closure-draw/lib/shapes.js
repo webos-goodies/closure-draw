@@ -56,13 +56,13 @@ closuredraw.AbstractShape.minimumValue = 0.01;
 closuredraw.AbstractShape.SvgShapes    = {};
 
 closuredraw.AbstractShape.prototype.disposeInternal = function() {
-  this.remove_();
+  this.remove();
   this.owner_   = null;
   this.element_ = null;
   closuredraw.AbstractShape.superClass_.disposeInternal.call(this);
 };
 
-closuredraw.AbstractShape.prototype.remove_ = function() {
+closuredraw.AbstractShape.prototype.remove = function() {
   if(this.owner_ && this.element_) {
 	if(this.element_ instanceof closuredraw.VmlElementWrapper)
 	  this.element_.remove();
@@ -71,8 +71,11 @@ closuredraw.AbstractShape.prototype.remove_ = function() {
   }
 };
 
-closuredraw.AbstractShape.prototype.reconstruct = function() {
+closuredraw.AbstractShape.prototype.detach = function() {
   this.element_ = null;
+};
+
+closuredraw.AbstractShape.prototype.reconstruct = function() {
   this.recreateElement();
   this.element_.setTransformation(this.x, this.y, this.rot, 0, 0);
 };
@@ -262,17 +265,13 @@ goog.inherits(closuredraw.Rect, closuredraw.StrokeAndFillShape);
 closuredraw.AbstractShape.SvgShapes['rect'] = closuredraw.Rect;
 
 closuredraw.Rect.prototype.recreateElement = function() {
-  var g = this.owner_.getGraphics(), w = this.width, h = this.height;
-  this.remove_();
-  if(this.usingVml_()) {
-	this.element_ = new closuredraw.VmlElementWrapper(g, function(group) {
-	  return g.drawRect(-w, -h, w*2, h*2, this.stroke_, this.fill_, group);
-	}, this);
-	this.element_.setPosition(-w, -h);
-	this.element_.setSize(w*2, h*2);
-  } else {
-	this.element_ = g.drawRect(-w, -h, w*2, h*2, this.stroke_, this.fill_);
-  }
+  var gr = this.owner_.getShapeGroup(), w = this.width, h = this.height;
+  this.remove();
+  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group) {
+	return g.drawRect(-w, -h, w*2, h*2, this.stroke_, this.fill_, group);
+  }, this);
+  this.element_.setPosition(-w, -h);
+  this.element_.setSize(w*2, h*2);
 };
 
 closuredraw.Rect.prototype.contains = function(x, y) {
@@ -334,16 +333,12 @@ closuredraw.Ellipse = function(owner, stroke, fill) {
 goog.inherits(closuredraw.Ellipse, closuredraw.StrokeAndFillShape);
 
 closuredraw.Ellipse.prototype.recreateElement = function() {
-  var g = this.owner_.getGraphics();
-  this.remove_();
-  if(this.usingVml_()) {
-	this.element_ = new closuredraw.VmlElementWrapper(g, function(group) {
-	  return g.drawEllipse(0, 0, this.width, this.height, this.stroke_, this.fill_, group);
-	}, this);
-	this.element_.setRadius(this.width, this.height);
-  } else {
-	this.element_ = g.drawEllipse(0, 0, this.width, this.height, this.stroke_, this.fill_);
-  }
+  var gr = this.owner_.getShapeGroup();
+  this.remove();
+  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group) {
+	return g.drawEllipse(0, 0, this.width, this.height, this.stroke_, this.fill_, group);
+  }, this);
+  this.element_.setRadius(this.width, this.height);
 };
 closuredraw.AbstractShape.SvgShapes['ellipse'] = closuredraw.Ellipse;
 
@@ -413,19 +408,14 @@ closuredraw.AbstractShape.SvgShapes['path'] = closuredraw.Path;
 closuredraw.Path.prototype.isPath = function() { return true; };
 
 closuredraw.Path.prototype.recreateElement = function() {
-  var g = this.owner_.getGraphics();
-  this.remove_();
-  if(this.usingVml_()) {
-	this.element_ = new closuredraw.VmlElementWrapper(g, function(group) {
-	  return g.drawPath(this.createPath_(), this.stroke_, this.fill_, group);
-	}, this);
-  } else {
-	this.element_ = g.drawPath(this.createPath_(), this.stroke_, this.fill_);
-  }
+  var gr = this.owner_.getShapeGroup();
+  this.remove();
+  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group) {
+	return g.drawPath(this.createPath_(), this.stroke_, this.fill_, group);
+  }, this);
 };
 
 closuredraw.Path.prototype.reconstruct = function() {
-  this.element_ = null;
   this.recreateElement();
   this.setTransform(this.x, this.y, this.width, this.height, this.rot, true);
 };
@@ -671,20 +661,18 @@ goog.inherits(closuredraw.Text, closuredraw.StrokeAndFillShape);
 closuredraw.AbstractShape.SvgShapes['text'] = closuredraw.Text;
 
 closuredraw.Text.prototype.recreateElement = function() {
-  var g = this.owner_.getGraphics(), w = this.width, h = this.height;
-  this.remove_();
-  if(this.usingVml_()) {
-	this.element_ = new closuredraw.VmlElementWrapper(g, function(group) {
+  var gr = this.owner_.getShapeGroup(), w = this.width, h = this.height;
+  this.remove();
+  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group, usingVml) {
+	if(usingVml)
 	  return this.vmlDrawText(group);
-	}, this);
-  } else {
-	this.element_ = g.drawText(this.text_, -w, -h, w*2, h*2, 'center', 'center',
-							   this.font_, this.stroke_, this.fill_);
-  }
+	else
+	  return g.drawText(this.text_, -w, -h, w*2, h*2, 'center', 'center',
+						this.font_, this.stroke_, this.fill_, group);
+  }, this);
 };
 
 closuredraw.Text.prototype.reconstruct = function() {
-  this.element_ = null;
   this.recreateElement();
   this.element_.setTransformation(this.x, this.y, this.usingVml_() ? 0 : this.rot, 0, 0);
 };
@@ -794,19 +782,14 @@ goog.inherits(closuredraw.Image, closuredraw.AbstractShape);
 closuredraw.AbstractShape.SvgShapes['image'] = closuredraw.Image;
 
 closuredraw.Image.prototype.recreateElement = function() {
-  var g = this.owner_.getGraphics(), w = this.width, h = this.height;
-  this.remove_();
-  if(this.usingVml_()) {
-	this.element_ = new closuredraw.VmlElementWrapper(g, function(group) {
-	  return g.drawImage(-w, -h, w*2, h*2, this.url_, group);
-	}, this);
-  } else {
-	this.element_ = g.drawImage(-w, -h, w*2, h*2, this.url_);
-  }
+  var gr = this.owner_.getShapeGroup(), w = this.width, h = this.height;
+  this.remove();
+  this.element_ = new closuredraw.VmlElementWrapper(gr, function(g, group) {
+	return g.drawImage(-w, -h, w*2, h*2, this.url_, group);
+  }, this);
 };
 
 closuredraw.Image.prototype.reconstruct = function() {
-  this.element_ = null;
   this.recreateElement();
   this.setTransform(this.x, this.y, this.width, this.height, this.rot, true);
 };

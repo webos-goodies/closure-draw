@@ -17,6 +17,7 @@ goog.provide('closuredraw.WidgetImportParams');
 
 goog.require('goog.object');
 goog.require('goog.array');
+goog.require('goog.math');
 goog.require('goog.math.Vec2');
 goog.require('goog.userAgent')
 goog.require('goog.dom');
@@ -27,6 +28,7 @@ goog.require('goog.events.EventHandler');
 goog.require('goog.graphics');
 goog.require('goog.graphics.Font');
 goog.require('goog.fx.Dragger');
+goog.require('goog.ui.Prompt');
 goog.require('closuredraw.AbstractMode');
 goog.require('closuredraw.Toolbar');
 
@@ -45,6 +47,7 @@ closuredraw.Widget = function(width, height, opt_domHelper) {
 
   // initialize member variables
   this.modes_         = [];
+  this.freeze_        = false;
   this.eventHandler_  = new goog.events.EventHandler(this);
   this.handleShapes_  = {};
   this.dragger_       = null;
@@ -57,6 +60,9 @@ closuredraw.Widget = function(width, height, opt_domHelper) {
   this.currentFont_   = new goog.graphics.Font(16, 'sans-serif');
   this.handleStroke_  = new goog.graphics.Stroke(1, '#000000');
   this.handleFill_    = new goog.graphics.SolidFill('#ffffff', 0.8);
+  this.promptDialogs_ = {};
+  this.promptScope_   = null;
+  this.promptHandler_ = null;
 
   // create operation mode objects
   closuredraw.AbstractMode.forEachMode(function(klass) {
@@ -72,8 +78,10 @@ closuredraw.Widget = function(width, height, opt_domHelper) {
   this.toolbar_.setFont(this.currentFont_);
 
   // create a graphics object
-  this.canvasEl_ = null;
-  this.graphics_ = goog.graphics.createGraphics(width, height, opt_domHelper);
+  this.canvasEl_    = null;
+  this.graphics_    = goog.graphics.createGraphics(width, height, opt_domHelper);
+  this.shapeGroup_  = null;
+  this.handleGroup_ = null;
   this.addChild(this.graphics_, false);
 };
 goog.inherits(closuredraw.Widget, goog.ui.Component);
@@ -116,6 +124,11 @@ closuredraw.Widget.prototype.decorateInternal = function(element) {
 closuredraw.Widget.prototype.enterDocument = function() {
   closuredraw.Widget.superClass_.enterDocument.call(this);
 
+  // create groups of each shape type.
+  this.shapeGroup_  = this.graphics_.createGroup();
+  this.handleGroup_ = this.graphics_.createGroup();
+
+  // regist event handlers.
   this.eventHandler_.listen(
 	this.canvasEl_, goog.events.EventType.MOUSEDOWN, this.onMouseDownCanvas_);
   this.eventHandler_.listen(
@@ -126,19 +139,25 @@ closuredraw.Widget.prototype.enterDocument = function() {
 	  this.canvasEl_, goog.events.EventType.DBLCLICK, this.onMouseDownCanvas_);
   }
 
+  // initialize the current mode.
   this.getCurrentMode().onEnter(this.currentShape_);
 };
 
 closuredraw.Widget.prototype.exitDocument = function() {
-  if(this.handleShapes_) this.removeAllHandleShapes();
+  this.freeze_ = false;
+  this.graphics_.clear();
   if(this.eventHandler_) this.eventHandler_.removeAll();
   closuredraw.Widget.superClass_.exitDocument.call(this);
 };
 
 closuredraw.Widget.prototype.disposeInternal = function() {
+  this.freeze_ = false;
   if(this.eventHandler_) this.eventHandler_.dispose();
   if(this.dragger_)      this.dragger_.dispose();
   if(this.graphics_)     this.graphics_.dispose();
+  if(this.promptDialogs_) {
+	goog.object.forEach(this.promptDialogs_ ,function(prompt) { prompt.dispose(); });
+  }
   this.modes_         = null;
   this.eventHandler_  = null;
   this.handleShapes_  = null;
@@ -153,6 +172,11 @@ closuredraw.Widget.prototype.disposeInternal = function() {
   this.toolbar_       = null;
   this.canvasEl_      = null;
   this.graphics_      = null;
+  this.shapeGroup_    = null;
+  this.handleGroup_   = null;
+  this.promptDialogs_ = null;
+  this.promptScope_   = null;
+  this.promptHandler_ = null;
   closuredraw.Widget.superClass_.disposeInternal.call(this);
 };
 
@@ -165,7 +189,7 @@ closuredraw.Widget.prototype.getCurrentMode = function() {
 };
 
 closuredraw.Widget.prototype.setModeIndex = function(index, opt_updateToolbar) {
-  if(this.currentMode_ != index) {
+  if(!this.freeze_ && this.currentMode_ != index) {
 	var shapeIndex = this.getCurrentMode().onExit();
 	this.endDrag();
 	this.setCurrentShapeIndex(-1);
@@ -182,6 +206,10 @@ closuredraw.Widget.prototype.getGraphics = function() {
   return this.graphics_;
 };
 
+closuredraw.Widget.prototype.getShapeGroup = function() {
+  return this.shapeGroup_;
+};
+
 closuredraw.Widget.prototype.clientToCanvas = function(x, y) {
   var bounds = this.canvasEl_.getBoundingClientRect();
   return new goog.math.Vec2(x - bounds.left, y - bounds.top);
@@ -189,6 +217,10 @@ closuredraw.Widget.prototype.clientToCanvas = function(x, y) {
 
 closuredraw.Widget.prototype.getShape = function(index) {
   return this.shapes_[index];
+};
+
+closuredraw.Widget.prototype.getShapeCount = function() {
+  return this.shapes_.length;
 };
 
 closuredraw.Widget.prototype.getShapeIndexAt = function(x, y) {
@@ -201,12 +233,14 @@ closuredraw.Widget.prototype.getShapeIndexAt = function(x, y) {
 };
 
 closuredraw.Widget.prototype.addShape = function(shape) {
-  this.shapes_.unshift(shape);
+  if(!this.freeze_)
+	this.shapes_.unshift(shape);
 };
 
 closuredraw.Widget.prototype.reconstructShapes = function() {
-  this.graphics_.clear();
+  this.shapeGroup_.clear();
   goog.array.forEachRight(this.shapes_, function(shape) {
+	shape.detach();
 	shape.reconstruct();
   });
 };
@@ -216,7 +250,7 @@ closuredraw.Widget.prototype.getCurrentShapeIndex = function() {
 };
 
 closuredraw.Widget.prototype.setCurrentShapeIndex = function(index) {
-  if(this.currentShape_ != index) {
+  if(!this.freeze_ && this.currentShape_ != index) {
 	if(index >= this.shapes_.length)
 	  index = -1;
 	this.removeAllHandleShapes();
@@ -238,74 +272,51 @@ closuredraw.Widget.prototype.setCurrentShapeIndex = function(index) {
 };
 
 closuredraw.Widget.prototype.deleteShape = function(index) {
-  if(this.currentShape_ == index)
-	this.setCurrentShapeIndex(-1);
-  var shape = this.getShape(index);
-  if(shape) {
-	goog.array.removeAt(this.shapes_, index);
-	shape.dispose();
-  }
-};
-
-closuredraw.Widget.prototype.deleteAllShapes = function() {
-  this.setModeIndex(0, true);
-  if(this.currentShape_ >= 0)
-	this.setCurrentShapeIndex(-1);
-
-  var shapes = this.shapes_, shape;
-  for(var i = 0, l = shapes.length ; i < l ; ++i) {
-	shape = shapes[i];
-	if(shape)
+  if(!this.freeze_) {
+	if(this.currentShape_ == index)
+	  this.setCurrentShapeIndex(-1);
+	var shape = this.getShape(index);
+	if(shape) {
+	  goog.array.removeAt(this.shapes_, index);
+	  shape.remove();
 	  shape.dispose();
-  }
-  this.shapes_ = [];
-};
-
-closuredraw.Widget.prototype.moveCurrentShapeUp = function() {
-  if(this.currentShape_ > 0) {
-	var index = this.currentShape_;
-	var shape = this.getShape(index);
-	this.setCurrentShapeIndex(-1);
-	this.shapes_[index]     = this.shapes_[index - 1];
-	this.shapes_[index - 1] = shape;
-	this.reconstructShapes();
-	this.setCurrentShapeIndex(index - 1);
+	}
   }
 };
 
-closuredraw.Widget.prototype.moveCurrentShapeDown = function() {
-  if(0 <= this.currentShape_ && this.currentShape_ < this.shapes_.length - 1) {
-	var index = this.currentShape_;
-	var shape = this.getShape(index);
-	this.setCurrentShapeIndex(-1);
-	this.shapes_[index]     = this.shapes_[index + 1];
-	this.shapes_[index + 1] = shape;
-	this.reconstructShapes();
-	this.setCurrentShapeIndex(index + 1);
+closuredraw.Widget.prototype.deleteAllShapes_ = function() {
+  if(!this.freeze_) {
+	this.setModeIndex(0, true);
+	if(this.currentShape_ >= 0)
+	  this.setCurrentShapeIndex(-1);
+
+	var shapes = this.shapes_, shape;
+	for(var i = 0, l = shapes.length ; i < l ; ++i) {
+	  shape = shapes[i];
+	  if(shape) {
+		shape.detach();
+		shape.dispose();
+	  }
+	}
+	this.shapeGroup_.clear();
+	this.shapes_ = [];
   }
 };
 
-closuredraw.Widget.prototype.moveCurrentShapeToTop = function() {
-  if(this.currentShape_ > 0) {
-	var index = this.currentShape_;
-	var shape = this.getShape(index);
-	this.setCurrentShapeIndex(-1);
-	goog.array.removeAt(this.shapes_, index);
-	this.shapes_.unshift(shape);
-	this.reconstructShapes();
-	this.setCurrentShapeIndex(0);
-  }
-};
-
-closuredraw.Widget.prototype.moveCurrentShapeToBottom = function() {
-  if(0 <= this.currentShape_ && this.currentShape_ < this.shapes_.length - 1) {
-	var index = this.currentShape_;
-	var shape = this.getShape(index);
-	this.setCurrentShapeIndex(-1);
-	goog.array.removeAt(this.shapes_, index);
-	this.shapes_.push(shape);
-	this.reconstructShapes();
-	this.setCurrentShapeIndex(this.shapes_.length - 1);
+closuredraw.Widget.prototype.bringTo = function(pos) {
+  var nNumShapes = this.getShapeCount();
+  if(!this.freeze_ && nNumShapes > 1) {
+	var index  = this.currentShape_;
+	var nPos   = parseInt(pos, 10);
+	var newPos = goog.math.clamp(/^[-+]/.test(pos) ? index + nPos : nPos, 0, nNumShapes - 1);
+	if(index != newPos) {
+	  var shape = this.getShape(index);
+	  this.setCurrentShapeIndex(-1);
+	  goog.array.removeAt(this.shapes_, index);
+	  goog.array.insertAt(this.shapes_, shape, newPos);
+	  this.reconstructShapes();
+	  this.setCurrentShapeIndex(newPos);
+	}
   }
 };
 
@@ -315,40 +326,43 @@ closuredraw.Widget.prototype.getHandleShape = function(label) {
 };
 
 closuredraw.Widget.prototype.addHandleShape = function(label, type) {
-  var g        = this.graphics_;
-  var usingVml = g instanceof goog.graphics.VmlGraphics;
-  var shape    = null;
-  if(type == 'corner' || type == 'vertex') {
-	if(usingVml) {
-	  shape = new closuredraw.VmlElementWrapper(g, function(group) {
-		return g.drawRect(-3, -3, 6, 6, this.handleStroke_, this.handleFill_, group);
-	  }, this);
-	  shape.setPosition(-3, -3); shape.setSize(6, 6);
-	} else {
-	  shape = g.drawRect(-3, -3, 6, 6, this.handleStroke_, this.handleFill_);
-	}
-  } else if(type == 'rotation') {
-	if(usingVml) {
-	  shape = new closuredraw.VmlElementWrapper(g, function(group) {
-		return g.drawCircle(0, 0, 4, this.handleStroke_, this.handleFill_, group);
-	  }, this);
-	  shape.setRadius(4, 4);
-	} else {
-	  shape = g.drawCircle(0, 0, 4, this.handleStroke_, this.handleFill_);
-	}
-  } else if(type == 'newtext') {
-	shape = g.drawRect(0, 0, 0, 0, this.handleStroke_, this.handleFill_);
+  if(this.freeze_) return null;
+
+  var gr    = this.handleGroup_;
+  var shape = null;
+
+  switch(type) {
+  case 'corner':
+  case 'vertex':
+	shape = new closuredraw.VmlElementWrapper(gr, function(g, group) {
+	  return g.drawRect(-3, -3, 6, 6, this.handleStroke_, this.handleFill_, group);
+	}, this);
+	shape.setPosition(-3, -3); shape.setSize(6, 6);
+	break;
+
+  case 'rotation':
+	shape = new closuredraw.VmlElementWrapper(gr, function(g, group) {
+	  return g.drawCircle(0, 0, 4, this.handleStroke_, this.handleFill_, group);
+	}, this);
+	shape.setRadius(4, 4);
+	break;
+
+  case 'newtext':
+	shape = this.graphics_.drawRect(0, 0, 0, 0, this.handleStroke_, this.handleFill_, gr);
+	break;
   }
+
   if(shape) {
 	var handle = this.handleShapes_[label];
 	if(handle && handle.element) {
 	  if(handle.element instanceof closuredraw.VmlElementWrapper)
 		handle.element.remove();
 	  else
-		g.removeElement(handle.element);
+		this.graphics_.removeElement(handle.element);
 	}
 	this.handleShapes_[label] = { x:0, y:0, element:shape };
   }
+
   return shape;
 };
 
@@ -362,16 +376,10 @@ closuredraw.Widget.prototype.transformHandleShape = function(label, x, y, rot, r
 };
 
 closuredraw.Widget.prototype.removeAllHandleShapes = function() {
-  var usingVml = this.graphics_ instanceof goog.graphics.VmlGraphics;
-  goog.object.forEach(this.handleShapes_, function(handle) {
-	if(handle) {
-	  if(handle.element instanceof goog.graphics.Element)
-		this.graphics_.removeElement(handle.element);
-	  else if(handle.element instanceof closuredraw.VmlElementWrapper)
-		handle.element.remove();
-	}
-  }, this);
-  this.handleShapes_ = {};
+  if(!this.freeze_) {
+	this.handleGroup_.clear();
+	this.handleShapes_ = {};
+  }
 };
 
 closuredraw.Widget.prototype.updateCornerHandles = function() {
@@ -414,13 +422,15 @@ closuredraw.Widget.prototype.getHandleLabelAt = function(x, y) {
 };
 
 closuredraw.Widget.prototype.beginDrag = function(e, ondrag, onend, opt_scope) {
-  if(!this.dragger_) {
-	this.dragger_   = new goog.fx.Dragger(this.dragTarget_);
-	var eventType   = goog.fx.Dragger.EventType;
-	goog.events.listen(this.dragger_, eventType.DRAG, ondrag, false, opt_scope || this);
-	goog.events.listen(this.dragger_, eventType.END,  onend,  false, opt_scope || this);
-	this.dragger_.startDrag(e);
-  }
+  if(this.freeze_ || this.dragger_)
+	return false;
+
+  this.dragger_   = new goog.fx.Dragger(this.dragTarget_);
+  var eventType   = goog.fx.Dragger.EventType;
+  goog.events.listen(this.dragger_, eventType.DRAG, ondrag, false, opt_scope || this);
+  goog.events.listen(this.dragger_, eventType.END,  onend,  false, opt_scope || this);
+  this.dragger_.startDrag(e);
+  return true;
 };
 
 closuredraw.Widget.prototype.endDrag = function() {
@@ -474,15 +484,41 @@ closuredraw.Widget.prototype.setCurrentFont = function(font, setToShape) {
 };
 
 closuredraw.Widget.prototype.onMouseDownCanvas_ = function(e) {
-  this.getCurrentMode().onMouseDownCanvas(e);
+  if(!this.freeze_)
+	this.getCurrentMode().onMouseDownCanvas(e);
 };
 
 closuredraw.Widget.prototype.onMouseMoveCanvas_ = function(e) {
-  this.getCurrentMode().onMouseMoveCanvas(e);
+  if(!this.freeze_)
+	this.getCurrentMode().onMouseMoveCanvas(e);
 };
 
 closuredraw.Widget.prototype.getToolbar = function() {
   return this.toolbar_;
+};
+
+closuredraw.Widget.prototype.showPrompt = function(message, value, handler, scope) {
+  var prompt = this.promptDialogs_[message];
+  if(!prompt) {
+	prompt = new goog.ui.Prompt('Closure Draw', message, goog.bind(this.onClosePrompt_, this),
+								null, 'closuredraw-modal', false, this.getDomHelper());
+	this.promptDialogs_[message] = prompt;
+  }
+  this.promptScope_   = scope;
+  this.promptHandler_ = handler;
+  this.freeze_        = true;
+  prompt.setDefaultValue(value);
+  prompt.setVisible(true);
+};
+
+closuredraw.Widget.prototype.onClosePrompt_ = function(result) {
+  var scope           = this.promptScope_;
+  var handler         = this.promptHandler_;
+  this.promptScope_   = null;
+  this.promptHandler_ = null;
+  this.freeze_        = false;
+  if(goog.isFunction(handler))
+	handler.call(scope, result);
 };
 
 closuredraw.Widget.prototype.exportSVG = function() {
@@ -507,7 +543,10 @@ closuredraw.Widget.prototype.exportSVG = function() {
 };
 
 closuredraw.Widget.prototype.importSVG = function(doc) {
-  this.deleteAllShapes();
+  if(this.freeze_)
+	return;
+
+  this.deleteAllShapes_();
   var elements = [];
   try {
 	elements = goog.dom.xml.selectNodes(doc, 'descendant::svg:g/node()');

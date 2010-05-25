@@ -1,14 +1,15 @@
 /*
-Use of this source code is governed by an Apache 2.0 License.
-See the COPYING file for details.
-*/
+ * Copyright 2009 The Closure Library Authors. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache 2.0 License.
+ * See the COPYING file for details.
+ */
 
-/* Copyright 2007 Google Inc.  All Rights Reserved. */
-/**/
-
-
-/* We need goog-inline-block from common.css. */
-@import url(common.css);
+/*
+ * Standard styling for toolbars and toolbar items.
+ *
+ * @author attila@google.com (Attila Bodis)
+ */
 
 
 /*
@@ -16,13 +17,14 @@ See the COPYING file for details.
  */
 
 .goog-toolbar {
-  position: relative;
-  margin: 0;
-  border-bottom: 1px solid #d5d5d5;
-  padding: 2px;
   background: #fafafa url(../images/toolbar-bg.png) repeat-x bottom left;
+  border-bottom: 1px solid #d5d5d5;
   cursor: default;
+  font: normal 12px Arial, sans-serif;
+  margin: 0;
   outline: none;
+  padding: 2px;
+  position: relative;
   zoom: 1; /* The toolbar element must have layout on IE. */
 }
 
@@ -34,7 +36,7 @@ See the COPYING file for details.
   margin: 0 2px;
   border: 0;
   padding: 0;
-  font: normal Tahoma, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   color: #333;
   text-decoration: none;
   list-style: none;
@@ -57,7 +59,7 @@ See the COPYING file for details.
 
 .goog-toolbar-button-inner-box {
   margin: 0 -1px;
-  padding: 3px 5px;
+  padding: 3px 4px;
 }
 
 /* Pre-IE7 IE hack; ignored by IE7 and all non-IE browsers. */
@@ -68,10 +70,10 @@ See the COPYING file for details.
 
 /* Pre-IE7 BiDi fixes. */
 * html .goog-toolbar-button-rtl .goog-toolbar-button-outer-box {
-  left: -1px;
+  /* @noflip */ left: -1px;
 }
 * html .goog-toolbar-button-rtl .goog-toolbar-button-inner-box {
-  left: 0;
+  /* @noflip */ right: auto;
 }
 
 
@@ -83,7 +85,8 @@ See the COPYING file for details.
 
 /* IE7 BiDi fix. */
 *:first-child+html .goog-toolbar-button-rtl .goog-toolbar-button-inner-box {
-  left: 1px;
+  /* @noflip */ left: 1px;
+  /* @noflip */ right: auto;
 }
 
 /* Safari-only hacks. */
@@ -144,7 +147,7 @@ See the COPYING file for details.
 .goog-toolbar-button-selected .goog-toolbar-button-inner-box {
   border-width: 0 1px;
   border-style: solid;
-  padding: 3px 4px;
+  padding: 3px;
 }
 
 /* Hover styles. */
@@ -186,13 +189,13 @@ See the COPYING file for details.
 
 /* Pre-IE7 IE hack; ignored by IE7 and all non-IE browsers. */
 * html .goog-toolbar-button-collapse-left .goog-toolbar-button-inner-box {
-  left: 0px;
+  left: 0;
 }
 
 /* IE7-only hack; ignored by all other browsers. */
 *:first-child+html .goog-toolbar-button-collapse-left
 .goog-toolbar-button-inner-box {
-  left: 0px;
+  left: 0;
 }
 
 
@@ -204,7 +207,7 @@ See the COPYING file for details.
   margin: 0 2px;
   border: 0;
   padding: 0;
-  font: normal Tahoma, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   color: #333;
   text-decoration: none;
   list-style: none;
@@ -227,7 +230,7 @@ See the COPYING file for details.
 
 .goog-toolbar-menu-button-inner-box {
   margin: 0 -1px;
-  padding: 3px 5px;
+  padding: 3px 4px;
 }
 
 /* Pre-IE7 IE hack; ignored by IE7 and all non-IE browsers. */
@@ -238,10 +241,10 @@ See the COPYING file for details.
 
 /* Pre-IE7 BiDi fixes. */
 * html .goog-toolbar-menu-button-rtl .goog-toolbar-menu-button-outer-box {
-  left: -1px;
+  /* @noflip */ left: -1px;
 }
 * html .goog-toolbar-menu-button-rtl .goog-toolbar-menu-button-inner-box {
-  left: 0;
+  /* @noflip */ right: auto;
 }
 
 /* IE7-only hack; ignored by all other browsers. */
@@ -253,7 +256,8 @@ See the COPYING file for details.
 /* IE7 BiDi fix. */
 *:first-child+html .goog-toolbar-menu-button-rtl
   .goog-toolbar-menu-button-inner-box {
-  left: 1px;
+  /* @noflip */ left: 1px;
+  /* @noflip */ right: auto;
 }
 
 /* Safari-only hacks. */
@@ -314,7 +318,7 @@ See the COPYING file for details.
 .goog-toolbar-menu-button-open .goog-toolbar-menu-button-inner-box {
   border-width: 0 1px;
   border-style: solid;
-  padding: 3px 4px;
+  padding: 3px;
 }
 
 /* Hover styles. */
@@ -344,15 +348,10 @@ See the COPYING file for details.
   vertical-align: middle;
 }
 
-/* BiDi hack. */
-.goog-toolbar-menu-button-rtl .goog-toolbar-menu-button-caption {
-  padding: 0 0 0 4px;
-}
-
 /* Dropdown style. */
 .goog-toolbar-menu-button-dropdown {
   width: 7px;
-  background: url(../images/toolbar_icons.gif) no-repeat -176px;
+  background: url(../images/toolbar_icons.gif) no-repeat -176px 0;
   vertical-align: middle;
 }
 
@@ -390,7 +389,7 @@ See the COPYING file for details.
 .goog-toolbar-select .goog-toolbar-menu-button-inner-box {
   border-width: 0 1px;
   border-style: solid;
-  padding: 3px 4px;
+  padding: 3px;
 }
 
 .goog-toolbar-select .goog-toolbar-menu-button-outer-box,
