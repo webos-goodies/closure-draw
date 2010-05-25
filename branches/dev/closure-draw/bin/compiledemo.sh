@@ -15,6 +15,7 @@ for jsfile in $DEMOS_DIR/*.js; do
 			-o compiled -c $CLOSURE_COMPILER \
 			-f "--compilation_level=${OPTIMIZATION}_OPTIMIZATIONS" \
 			-f "--create_source_map=$basename-min-map" \
+			-f "'--output_wrapper=(function(){%output%})();'" \
 			> $basename-min.js
 	fi
 done
