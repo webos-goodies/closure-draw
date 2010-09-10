@@ -1,3 +1,4 @@
+goog.provide('closuredraw.tutorial.App');
 goog.require('goog.dom.xml');
 //goog.require('goog.crypt.base64');
 goog.require('goog.string');
@@ -6,7 +7,8 @@ goog.require('goog.ui.ToolbarButton');
 goog.require('goog.ui.ToolbarSeparator');
 goog.require('closuredraw');
 
-function initialize() {
+/** @constructor */
+closuredraw.tutorial.App = function() {
   var canvas = new closuredraw.Widget(512, 512);
   canvas.render(goog.dom.$('canvas'));
 
@@ -22,4 +24,4 @@ function initialize() {
 	window.open('data:image/svg+xml;charset=UTF-8,' + url, null);
   });
 }
-goog.exportSymbol('initialize', initialize, window);
+new closuredraw.tutorial.App();

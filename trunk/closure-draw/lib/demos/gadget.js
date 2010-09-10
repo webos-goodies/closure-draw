@@ -1,3 +1,4 @@
+goog.provide('closuredraw.gadget.App');
 goog.require('goog.dom.xml');
 goog.require('goog.string');
 goog.require('goog.userAgent');
@@ -5,7 +6,7 @@ goog.require('goog.ui.ToolbarButton');
 goog.require('goog.ui.ToolbarSeparator');
 goog.require('closuredraw');
 
-function initialize() {
+closuredraw.gadget.App = function() {
   var width = 0, height = 512;
   if(document.documentElement && document.documentElement.clientWidth) {
 	width = document.documentElement.clientWidth;
@@ -40,4 +41,4 @@ function initialize() {
 	}
   });
 }
-goog.exportSymbol('initialize', initialize, window);
+new closuredraw.gadget.App();
