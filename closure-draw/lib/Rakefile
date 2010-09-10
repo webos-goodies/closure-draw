@@ -4,12 +4,15 @@ require 'rake/clean'
 
 $KCODE = 'U'
 
-CLOSURE_LIB_DIR  = "../../closure-library/closure"
+CLOSURE_LIB_DIR  = "../../closure-library"
 CLOSURE_DRAW_DIR = ".."
 
 PYTHON           = "python"
-CALCDEPS         = File.join(CLOSURE_LIB_DIR,  "bin/calcdeps.py")
+DEPSWRITER       = File.join(CLOSURE_LIB_DIR,  "closure/bin/build/depswriter.py")
+CLOSUREBUILDER   = File.join(CLOSURE_LIB_DIR,  "closure/bin/build/closurebuilder.py")
 CLOSURE_COMPILER = File.join(CLOSURE_DRAW_DIR, "bin/compiler.jar")
+
+DEPS_FILE        = File.join(CLOSURE_DRAW_DIR, "lib/deps.js")
 
 DEMOS_DIR        = "demos"
 DEMO_SRCS        = FileList[File.join(DEMOS_DIR, "*.js")].exclude("**/*-min.js")
@@ -30,13 +33,23 @@ def execCmd(cmd)
 end
 
 def compile(fname)
-  execCmd(["#{PYTHON} #{CALCDEPS} -i #{fname}",
+  ns = 'closuredraw.' + File.basename(fname).gsub(/-|\..*/, '') + '.App'
+  execCmd(["#{PYTHON} #{CLOSUREBUILDER} -n #{ns}",
            "-o compiled -c #{CLOSURE_COMPILER}",
-           "-p #{CLOSURE_LIB_DIR}/goog -p #{CLOSURE_DRAW_DIR}/lib",
+           "--root #{CLOSURE_LIB_DIR} --root #{CLOSURE_DRAW_DIR}/lib",
            "-f \"--define=goog.DEBUG=false\"",
            #"-f \"--create_source_map=#{fname.gsub(/\..+/u, '')}-min-map\"",
            "-f \"--compilation_level=ADVANCED_OPTIMIZATIONS\"",
            "-f \"--output_wrapper=(function(){%output%})();\""
+          ].join(' '))
+end
+
+task :default => [:deps, :demos]
+
+task :deps do
+  execCmd(["#{PYTHON} #{DEPSWRITER}",
+           "--root_with_prefix=\". ../../../closure-draw/lib\"",
+           "--output_file=#{DEPS_FILE}"
           ].join(' '))
 end
 

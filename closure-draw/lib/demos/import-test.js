@@ -1,7 +1,8 @@
+goog.provide('closuredraw.importtest.App');
 goog.require('goog.dom.xml');
 goog.require('closuredraw');
 
-function initialize() {
+closuredraw.importtest.App = function() {
   var canvas1 = new closuredraw.Widget(512, 256);
   canvas1.render(goog.dom.$('canvas1'));
 
@@ -16,4 +17,5 @@ function initialize() {
 	canvas2.importSVG(goog.dom.xml.loadXml(svg));
   });
 }
-goog.exportSymbol('initialize', initialize, window);
+
+new closuredraw.importtest.App();
