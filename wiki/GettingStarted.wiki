@@ -25,7 +25,10 @@ Save the following HTML in a file called tutorial.html. Place this file in the c
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/common.css">
     <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/toolbar.css">
-    <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/menus.css">
+    <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/menu.css">
+    <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/menubutton.css">
+    <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/menuitem.css">
+    <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/menuseparator.css">
     <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/colormenubutton.css">
     <link rel="stylesheet" type="text/css" href="closure-library/closure/goog/css/colorpicker-simplegrid.css">
     <link rel="stylesheet" type="text/css" href="closure-draw/lib/demos/css/closure-draw.css">
