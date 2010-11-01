@@ -23,6 +23,7 @@ goog.provide('closuredraw.TextMode');
 
 goog.require('goog.array');
 goog.require('goog.math.Vec2');
+goog.require('closuredraw.Mode');
 goog.require('closuredraw.Rect');
 goog.require('closuredraw.Ellipse');
 goog.require('closuredraw.Path');
@@ -34,16 +35,6 @@ goog.require('closuredraw.Text');
 closuredraw.AbstractMode = function(owner) {
   this.owner = owner;
 }
-
-closuredraw.AbstractMode.modes_ = [];
-
-closuredraw.AbstractMode.addMode = function(mode) {
-  closuredraw.AbstractMode.modes_.push(mode);
-};
-
-closuredraw.AbstractMode.forEachMode = function(func, scope) {
-  goog.array.forEach(closuredraw.AbstractMode.modes_, func, scope);
-};
 
 closuredraw.AbstractMode.prototype.computeBounds = function(pt1, pt2, shape, opt_square) {
   var Vec2   = goog.math.Vec2;
@@ -87,12 +78,6 @@ closuredraw.MoveMode = function(owner) {
   this.basePt_  = null;
 }
 goog.inherits(closuredraw.MoveMode, closuredraw.AbstractMode);
-closuredraw.AbstractMode.addMode(closuredraw.MoveMode);
-
-closuredraw.MoveMode.prototype.getCaption = function(domHelper) {
-  return domHelper.htmlToDocumentFragment(
-	'<div class="closuredraw-icon closuredraw-mode-move">&nbsp</div>');
-};
 
 closuredraw.MoveMode.prototype.onEnter = function(shapeIndex) {
   this.owner.setCurrentShapeIndex(shapeIndex);
@@ -181,12 +166,6 @@ closuredraw.ModifyMode = function(owner) {
 }
 
 goog.inherits(closuredraw.ModifyMode, closuredraw.AbstractMode);
-closuredraw.AbstractMode.addMode(closuredraw.ModifyMode);
-
-closuredraw.ModifyMode.prototype.getCaption = function(domHelper) {
-  return domHelper.htmlToDocumentFragment(
-	'<div class="closuredraw-icon closuredraw-mode-modify">&nbsp</div>');
-};
 
 closuredraw.ModifyMode.prototype.onEnter = function(shapeIndex) {
   this.editingIndex_ = shapeIndex;
@@ -338,7 +317,7 @@ closuredraw.DrawMode.prototype.onDrag_ = function(e) {
 closuredraw.DrawMode.prototype.onDragEnd_ = function(e) {
   var owner = this.owner;
   owner.endDrag();
-  owner.setModeIndex(0, true);
+  owner.setMode(closuredraw.Mode.MOVE);
   owner.setCurrentShapeIndex(0);
 }
 
@@ -349,12 +328,6 @@ closuredraw.RectMode = function(owner){
   closuredraw.DrawMode.call(this, owner);
 };
 goog.inherits(closuredraw.RectMode, closuredraw.DrawMode);
-closuredraw.AbstractMode.addMode(closuredraw.RectMode);
-
-closuredraw.RectMode.prototype.getCaption = function(domHelper) {
-  return domHelper.htmlToDocumentFragment(
-	'<div class="closuredraw-icon closuredraw-mode-rect">&nbsp</div>');
-};
 
 closuredraw.RectMode.prototype.createShape_ = function(owner) {
   return new closuredraw.Rect(owner, owner.getCurrentStroke(), owner.getCurrentFill());
@@ -367,12 +340,6 @@ closuredraw.EllipseMode = function(owner){
   closuredraw.DrawMode.call(this, owner);
 };
 goog.inherits(closuredraw.EllipseMode, closuredraw.DrawMode);
-closuredraw.AbstractMode.addMode(closuredraw.EllipseMode);
-
-closuredraw.EllipseMode.prototype.getCaption = function(domHelper) {
-  return domHelper.htmlToDocumentFragment(
-	'<div class="closuredraw-icon closuredraw-mode-ellipse">&nbsp</div>');
-};
 
 closuredraw.EllipseMode.prototype.createShape_ = function(owner) {
   return new closuredraw.Ellipse(owner, owner.getCurrentStroke(), owner.getCurrentFill());
@@ -387,12 +354,6 @@ closuredraw.PathMode = function(owner){
 };
 
 goog.inherits(closuredraw.PathMode, closuredraw.DrawMode);
-closuredraw.AbstractMode.addMode(closuredraw.PathMode);
-
-closuredraw.PathMode.prototype.getCaption = function(domHelper) {
-  return domHelper.htmlToDocumentFragment(
-	'<div class="closuredraw-icon closuredraw-mode-path">&nbsp</div>');
-};
 
 closuredraw.PathMode.prototype.onMouseDownCanvas = function(e) {
   var owner = this.owner;
@@ -456,7 +417,7 @@ closuredraw.PathMode.prototype.finishDrawing_ = function() {
 	  shape.close(false);
 	shape.updatePath();
 	shape.updateBounds();
-	owner.setModeIndex(0, true);
+	owner.setMode(closuredraw.Mode.MOVE);
 	owner.setCurrentShapeIndex(0);
   }
 };
@@ -469,12 +430,6 @@ closuredraw.TextMode = function(owner){
   this.startPt_ = null;
 };
 goog.inherits(closuredraw.TextMode, closuredraw.AbstractMode);
-closuredraw.AbstractMode.addMode(closuredraw.TextMode);
-
-closuredraw.TextMode.prototype.getCaption = function(domHelper) {
-  return domHelper.htmlToDocumentFragment(
-	'<div class="closuredraw-icon closuredraw-mode-text">&nbsp</div>');
-};
 
 closuredraw.TextMode.prototype.onMouseDownCanvas = function(e) {
   var owner = this.owner;
@@ -518,7 +473,7 @@ closuredraw.TextMode.prototype.onDragEnd_ = function(e) {
 	var b = closuredraw.TextMode.computeTextBounds_(pt1, pt2);
 	owner.removeAllHandleShapes();
 	owner.endDrag();
-	owner.setModeIndex(0, true);
+	owner.setMode(closuredraw.Mode.MOVE);
 	if(b.right - b.left < 16) {
 	  b.left  -= 8;
 	  b.right += 8;
