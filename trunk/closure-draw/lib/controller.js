@@ -13,6 +13,8 @@
 // Copyright 2010 Chihiro Ito. All Rights Reserved.
 
 goog.provide('closuredraw.Controller');
+goog.require('goog.dom');
+goog.require('goog.dom.classes');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.ui.Component');
@@ -62,15 +64,26 @@ closuredraw.Controller.prototype.components_;
  * @param {goog.events.EventTarget} component The UI component.
  */
 closuredraw.Controller.prototype.addComponent = function(component) {
-  if(component instanceof goog.events.EventTarget) {
-	this.components_.push(component);
+  this.components_.push(component);
+  this.eh_.listen(
+	component, goog.ui.Component.EventType.ACTION, this.onAction_);
+  this.eh_.listen(
+	component, closuredraw.CommandEvent.EVENT_TYPE, this.onCommand_);
+  if(goog.isFunction(component.updateClosureDrawStatus)) {
+	component.updateClosureDrawStatus(this.canvas_.queryStatus());
+  }
+};
+
+/**
+ * Adds a HTML element.
+ * @param {Element} element The HTML element.
+ */
+closuredraw.Controller.prototype.addElement = function(element) {
+  var command = element.getAttribute('closuredrawcmd');
+  var value   = element.getAttribute('closuredrawval');
+  if(command && value && closuredraw.Controller.isCommand_(command)) {
 	this.eh_.listen(
-	  component, goog.ui.Component.EventType.ACTION, this.onAction_);
-	this.eh_.listen(
-	  component, closuredraw.CommandEvent.EVENT_TYPE, this.onCommand_);
-	if(goog.isFunction(component.updateClosureDrawStatus)) {
-	  component.updateClosureDrawStatus(this.canvas_.queryStatus());
-	}
+	  element, goog.events.EventType.CLICK, goog.bind(this.onClick_, this, command, value));
   }
 };
 
@@ -108,7 +121,7 @@ closuredraw.Controller.prototype.onAction_ = function(e) {
 };
 
 /**
- * Event handler for command events.
+ * Event handler for command event.
  * @param {goog.events.Event} e Event object.
  * @private
  */
@@ -116,6 +129,17 @@ closuredraw.Controller.prototype.onCommand_ = function(e) {
   if(closuredraw.Controller.isCommand_(e.command)) {
 	this.canvas_.execCommand(e.command, e.arg);
   }
+};
+
+/**
+ * Event handler for click event.
+ * @param {string} command The command to execute.
+ * @param {string} arg The argument.
+ * @param {goog.events.Event} e Event object.
+ * @private
+ */
+closuredraw.Controller.prototype.onClick_ = function(command, arg, e) {
+  this.canvas_.execCommand(command, arg);
 };
 
 /**

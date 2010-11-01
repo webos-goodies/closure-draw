@@ -3,8 +3,8 @@
 goog.addDependency('../../../closure-draw/lib/canvas.js', ['closuredraw.Canvas'], ['closuredraw.CanvasEvent', 'closuredraw.Command', 'closuredraw.EllipseMode', 'closuredraw.Mode', 'closuredraw.ModifyMode', 'closuredraw.MoveMode', 'closuredraw.PathMode', 'closuredraw.RectMode', 'closuredraw.TextMode', 'closuredraw.XmlNS', 'closuredraw.utils', 'goog.array', 'goog.dom', 'goog.dom.DomHelper', 'goog.dom.xml', 'goog.events', 'goog.events.EventHandler', 'goog.fx.Dragger', 'goog.graphics', 'goog.graphics.Font', 'goog.math', 'goog.object', 'goog.ui.Prompt', 'goog.userAgent']);
 goog.addDependency('../../../closure-draw/lib/closuredraw.js', ['closuredraw'], ['closuredraw.Widget']);
 goog.addDependency('../../../closure-draw/lib/commands.js', ['closuredraw.Command', 'closuredraw.Mode'], []);
-goog.addDependency('../../../closure-draw/lib/controller.js', ['closuredraw.Controller'], ['closuredraw.Canvas', 'closuredraw.Command', 'closuredraw.CommandEvent', 'goog.events.EventHandler', 'goog.events.EventTarget', 'goog.ui.Component']);
-goog.addDependency('../../../closure-draw/lib/demos/chromeless.js', ['closuredraw.chromeless.App'], ['closuredraw.Canvas', 'closuredraw.Commands', 'goog.array', 'goog.dom', 'goog.events']);
+goog.addDependency('../../../closure-draw/lib/controller.js', ['closuredraw.Controller'], ['closuredraw.Canvas', 'closuredraw.Command', 'closuredraw.CommandEvent', 'goog.dom', 'goog.dom.classes', 'goog.events.EventHandler', 'goog.events.EventTarget', 'goog.ui.Component']);
+goog.addDependency('../../../closure-draw/lib/demos/chromeless.js', ['closuredraw.chromeless.App'], ['closuredraw.Canvas', 'closuredraw.Command', 'closuredraw.Controller', 'goog.array', 'goog.dom', 'goog.events']);
 goog.addDependency('../../../closure-draw/lib/demos/gadget-min.js', [], []);
 goog.addDependency('../../../closure-draw/lib/demos/gadget.js', ['closuredraw.gadget.App'], ['closuredraw', 'goog.dom.xml', 'goog.string', 'goog.ui.ToolbarButton', 'goog.ui.ToolbarSeparator', 'goog.userAgent']);
 goog.addDependency('../../../closure-draw/lib/demos/import-test-min.js', [], []);
