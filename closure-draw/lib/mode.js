@@ -72,12 +72,72 @@ closuredraw.AbstractMode.prototype.onMouseMoveCanvas = goog.nullFunction;
 //----------------------------------------------------------
 
 /** @constructor */
+closuredraw.HandleMode = function(owner) {
+  goog.base(this, owner);
+  this.basePt_ = null;
+};
+goog.inherits(closuredraw.HandleMode, closuredraw.AbstractMode);
+
+closuredraw.HandleMode.prototype.processHandle = function(e, pt) {
+  var owner = this.owner;
+  if(!owner.dragging()) {
+	var label     = owner.getHandleLabelAt(pt.x, pt.y);
+	var index     = owner.getCurrentShapeIndex();
+	var processed = false;
+	if(label && index >= 0) {
+	  var shape = owner.getShape(index);
+	  if(label == 'rot') {
+		owner.beginDrag(e, this.onDragRotationHandle_, this.onDragEndHandle_, this);
+		processed = true;
+	  } else if(/^(left|right)(Top|Bottom)$/.exec(label)) {
+		this.basePt_ = new goog.math.Vec2(
+		  shape.width  * (RegExp.$1 == 'left' ? +1  : -1),
+		  shape.height * (RegExp.$2 == 'Top'  ? +1  : -1));
+		this.basePt_ = shape.getTransform().transform(this.basePt_);
+		owner.beginDrag(e, this.onDragCornerHandle_, this.onDragEndHandle_, this);
+		processed = true;
+	  }
+	}
+  }
+  return processed;
+};
+
+closuredraw.HandleMode.prototype.onDragCornerHandle_ = function(e) {
+  var owner = this.owner;
+  var index = owner.getCurrentShapeIndex();
+  if(owner.dragging() && index >= 0) {
+	var shape = owner.getShape(index);
+	var pt    = owner.clientToCanvas(e.clientX, e.clientY);
+	var b     = this.computeBounds(pt, this.basePt_, shape);
+	shape.setTransform(b.x, b.y, b.w, b.h, shape.rot);
+	owner.updateCornerHandles();
+  }
+};
+
+closuredraw.HandleMode.prototype.onDragRotationHandle_ = function(e) {
+  var owner = this.owner;
+  var index = owner.getCurrentShapeIndex();
+  if(owner.dragging() && index >= 0) {
+	var shape = owner.getShape(index);
+	var pt    = owner.clientToCanvas(e.clientX, e.clientY);
+	var angle = Math.atan2(pt.x - shape.x, -(pt.y - shape.y)) * 180.0 / Math.PI;
+	owner.getShape(index).setTransform(shape.x, shape.y, shape.width, shape.height, angle);
+	owner.updateCornerHandles();
+  }
+};
+
+closuredraw.HandleMode.prototype.onDragEndHandle_ = function(e) {
+  this.owner.endDrag();
+};
+
+//----------------------------------------------------------
+
+/** @constructor */
 closuredraw.MoveMode = function(owner) {
   closuredraw.AbstractMode.call(this, owner);
   this.startPt_ = null;
-  this.basePt_  = null;
 }
-goog.inherits(closuredraw.MoveMode, closuredraw.AbstractMode);
+goog.inherits(closuredraw.MoveMode, closuredraw.HandleMode);
 
 closuredraw.MoveMode.prototype.onEnter = function(shapeIndex) {
   this.owner.setCurrentShapeIndex(shapeIndex);
@@ -85,30 +145,15 @@ closuredraw.MoveMode.prototype.onEnter = function(shapeIndex) {
 
 closuredraw.MoveMode.prototype.onMouseDownCanvas = function(e) {
   var owner = this.owner;
-  if(!owner.dragging()) {
-	var pt    = owner.clientToCanvas(e.clientX, e.clientY);
-	var label = owner.getHandleLabelAt(pt.x, pt.y);
-	var index = owner.getCurrentShapeIndex();
-	if(label && index >= 0) {
-	  var shape = owner.getShape(index);
-	  if(label == 'rot') {
-		owner.beginDrag(e, this.onDragRotationHandle_, this.onDragEnd_, this);
-	  } else if(/^(left|right)(Top|Bottom)$/.exec(label)) {
-		this.basePt_ = new goog.math.Vec2(
-		  shape.width  * (RegExp.$1 == 'left' ? +1  : -1),
-		  shape.height * (RegExp.$2 == 'Top'  ? +1  : -1));
-		this.basePt_ = shape.getTransform().transform(this.basePt_);
-		owner.beginDrag(e, this.onDragCornerHandle_, this.onDragEnd_, this);
-	  }
-	} else {
-	  index = owner.getShapeIndexAt(pt.x, pt.y);
-	  owner.setCurrentShapeIndex(index);
-	  if(index >= 0) {
-		var shape  = owner.getShape(index);
-		this.startPt_ = pt;
-		this.basePt_  = new goog.math.Vec2(shape.x, shape.y);
-		owner.beginDrag(e, this.onDragShape_, this.onDragEnd_, this);
-	  }
+  var pt    = owner.clientToCanvas(e.clientX, e.clientY);
+  if(!this.processHandle(e, pt) && !owner.dragging()) {
+	var index = owner.getShapeIndexAt(pt.x, pt.y);
+	owner.setCurrentShapeIndex(index);
+	if(index >= 0) {
+	  var shape  = owner.getShape(index);
+	  this.startPt_ = pt;
+	  this.basePt_  = new goog.math.Vec2(shape.x, shape.y);
+	  owner.beginDrag(e, this.onDragShape_, this.onDragEnd_, this);
 	}
   }
 };
@@ -122,30 +167,6 @@ closuredraw.MoveMode.prototype.onDragShape_ = function(e) {
 	shape.setTransform(this.basePt_.x + pt.x - this.startPt_.x,
 					   this.basePt_.y + pt.y - this.startPt_.y,
 					   shape.width, shape.height, shape.rot);
-	owner.updateCornerHandles();
-  }
-};
-
-closuredraw.MoveMode.prototype.onDragCornerHandle_ = function(e) {
-  var owner = this.owner;
-  var index = owner.getCurrentShapeIndex();
-  if(owner.dragging() && index >= 0) {
-	var shape = owner.getShape(index);
-	var pt    = owner.clientToCanvas(e.clientX, e.clientY);
-	var b     = this.computeBounds(pt, this.basePt_, shape);
-	shape.setTransform(b.x, b.y, b.w, b.h, shape.rot);
-	owner.updateCornerHandles();
-  }
-};
-
-closuredraw.MoveMode.prototype.onDragRotationHandle_ = function(e) {
-  var owner = this.owner;
-  var index = owner.getCurrentShapeIndex();
-  if(owner.dragging() && index >= 0) {
-	var shape = owner.getShape(index);
-	var pt    = owner.clientToCanvas(e.clientX, e.clientY);
-	var angle = Math.atan2(pt.x - shape.x, -(pt.y - shape.y)) * 180.0 / Math.PI;
-	owner.getShape(index).setTransform(shape.x, shape.y, shape.width, shape.height, angle);
 	owner.updateCornerHandles();
   }
 };
@@ -289,16 +310,18 @@ closuredraw.DrawMode = function(owner) {
   closuredraw.AbstractMode.call(this, owner);
   this.startPt_ = null;
 };
-goog.inherits(closuredraw.DrawMode, closuredraw.AbstractMode);
+goog.inherits(closuredraw.DrawMode, closuredraw.HandleMode);
 
 closuredraw.DrawMode.createShape_ = goog.abstractMethod;
 
 closuredraw.DrawMode.prototype.onMouseDownCanvas = function(e) {
   var owner = this.owner;
-  if(!owner.dragging()) {
-	this.startPt_ = owner.clientToCanvas(e.clientX, e.clientY);
+  var pt    = owner.clientToCanvas(e.clientX, e.clientY);
+  if(!this.processHandle(e, pt) && !owner.dragging()) {
+	this.startPt_ = pt;
 	var shape     = this.createShape_(owner);
 	shape.setTransform(this.startPt_.x, this.startPt_.y, shape.width, shape.height, 0);
+	owner.setCurrentShapeIndex(-1);
 	owner.addShape(shape);
 	owner.beginDrag(e, this.onDrag_, this.onDragEnd_, this);
   }
@@ -317,8 +340,19 @@ closuredraw.DrawMode.prototype.onDrag_ = function(e) {
 closuredraw.DrawMode.prototype.onDragEnd_ = function(e) {
   var owner = this.owner;
   owner.endDrag();
-  owner.setMode(closuredraw.Mode.MOVE);
-  owner.setCurrentShapeIndex(0);
+  var shape = owner.getShape(0);
+  if(shape) {
+	var pt = owner.clientToCanvas(e.clientX, e.clientY);
+	var d  = goog.math.Vec2.difference(pt, this.startPt_);
+	if(d.x*d.x + d.y*d.y > 1.5) {
+	  owner.setCurrentShapeIndex(0);
+	} else {
+	  owner.deleteShape(0);
+	  var index = owner.getShapeIndexAt(pt.x, pt.y);
+	  if(index >= 0)
+		owner.setCurrentShapeIndex(index);
+	}
+  }
 }
 
 //----------------------------------------------------------
@@ -359,13 +393,17 @@ closuredraw.PathMode.prototype.onMouseDownCanvas = function(e) {
   var owner = this.owner;
   var pt    = owner.clientToCanvas(e.clientX, e.clientY);
   if(!this.drawing_) {
-	var shape    = new closuredraw.Path(owner, owner.getCurrentStroke(), owner.getCurrentFill());
-	var vertices = shape.getVertices();
-	owner.addShape(shape);
-	vertices.push(pt);
-	vertices.push(pt);
-	shape.updatePath();
-	this.drawing_ = true;
+	if(!this.processHandle(e, pt)) {
+	  var shape = new closuredraw.Path(
+		owner, owner.getCurrentStroke(), owner.getCurrentFill());
+	  var vertices = shape.getVertices();
+	  owner.setCurrentShapeIndex(-1);
+	  owner.addShape(shape);
+	  vertices.push(pt);
+	  vertices.push(pt);
+	  shape.updatePath();
+	  this.drawing_ = true;
+	}
   } else {
 	var shape    = owner.getShape(0);
 	var vertices = shape.getVertices();
@@ -417,7 +455,6 @@ closuredraw.PathMode.prototype.finishDrawing_ = function() {
 	  shape.close(false);
 	shape.updatePath();
 	shape.updateBounds();
-	owner.setMode(closuredraw.Mode.MOVE);
 	owner.setCurrentShapeIndex(0);
   }
 };
@@ -429,12 +466,13 @@ closuredraw.TextMode = function(owner){
   closuredraw.AbstractMode.call(this, owner);
   this.startPt_ = null;
 };
-goog.inherits(closuredraw.TextMode, closuredraw.AbstractMode);
+goog.inherits(closuredraw.TextMode, closuredraw.HandleMode);
 
 closuredraw.TextMode.prototype.onMouseDownCanvas = function(e) {
   var owner = this.owner;
-  if(!owner.dragging()) {
-	this.startPt_ = owner.clientToCanvas(e.clientX, e.clientY);
+  var pt    = owner.clientToCanvas(e.clientX, e.clientY);
+  if(!this.processHandle(e, pt) && !owner.dragging()) {
+	this.startPt_ = pt;
 	var handle    = owner.addHandleShape('newtext', 'newtext');
 	if(handle)
 	  owner.beginDrag(e, this.onDrag_, this.onDragEnd_, this);
@@ -461,19 +499,24 @@ closuredraw.TextMode.prototype.onDragEnd_ = function(e) {
   var pt1 = owner.clientToCanvas(e.clientX, e.clientY);
   var pt2 = this.startPt_;
   var index, shape;
-  if(goog.math.Vec2.squaredDistance(pt1, pt2) < 3*3 &&
-	 (index = owner.getShapeIndexAt(pt2.x, pt2.y)) >= 0 &&
-	 (shape = owner.getShape(index)).isText()) {
-	owner.endDrag();
-	owner.showPrompt("Specify text to display", shape.getText(), function(text) {
-	  if(text)
-		shape.setText(text);
-	}, this);
+  owner.endDrag();
+  if(goog.math.Vec2.squaredDistance(pt1, pt2) < 3*3) {
+	index = owner.getShapeIndexAt(pt2.x, pt2.y);
+	if(index >= 0) {
+	  if((shape = owner.getShape(index)).isText()) {
+		owner.showPrompt("Specify text to display", shape.getText(), function(text) {
+		  if(text)
+			shape.setText(text);
+		  owner.setCurrentShapeIndex(index);
+		}, this);
+	  } else {
+		owner.setCurrentShapeIndex(index);
+	  }
+	}
   } else {
 	var b = closuredraw.TextMode.computeTextBounds_(pt1, pt2);
 	owner.removeAllHandleShapes();
-	owner.endDrag();
-	owner.setMode(closuredraw.Mode.MOVE);
+	owner.setCurrentShapeIndex(-1);
 	if(b.right - b.left < 16) {
 	  b.left  -= 8;
 	  b.right += 8;
