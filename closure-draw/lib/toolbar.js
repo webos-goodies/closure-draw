@@ -16,12 +16,16 @@ goog.provide('closuredraw.Toolbar');
 goog.provide('closuredraw.ToolbarSelect');
 
 goog.require('goog.array');
+goog.require('goog.dom');
+goog.require('goog.dom.classes');
+goog.require('goog.dom.DomHelper');
 goog.require('goog.events');
 goog.require('goog.ui.Toolbar');
 goog.require('goog.ui.ToolbarButton');
 goog.require('goog.ui.ToolbarSelect');
 goog.require('goog.ui.ToolbarColorMenuButton');
 goog.require('goog.ui.ToolbarSeparator');
+goog.require('goog.ui.Tooltip');
 goog.require('closuredraw.Command');
 goog.require('closuredraw.Mode');
 goog.require('closuredraw.CommandEvent');
@@ -40,19 +44,22 @@ goog.require('closuredraw.CommandEvent');
 closuredraw.Toolbar = function(opt_renderer, opt_orientation, opt_domHelper) {
   goog.base(this, opt_renderer, opt_orientation, opt_domHelper);
 
+  this.tooltips_ = [];
+
+  // create toolbar buttons
   var dom            = this.getDomHelper();
-  this.modeSelector_ = new closuredraw.ToolbarSelect();
-  this.imageBtn_     = new goog.ui.ToolbarButton(this.makeCaption_('insert-image'));
-  this.strokeWidth_  = new goog.ui.ToolbarSelect();
-  this.strokeColor_  = this.createColorButton_(this.makeCaption_('color-stroke', 12));
-  this.fillColor_    = this.createColorButton_(this.makeCaption_('color-fill',   12));
-  this.fontSize_     = new goog.ui.ToolbarSelect();
-  this.upBtn_        = new goog.ui.ToolbarButton(this.makeCaption_('bring-up'));
-  this.downBtn_      = new goog.ui.ToolbarButton(this.makeCaption_('bring-down'));
-  this.topBtn_       = new goog.ui.ToolbarButton(this.makeCaption_('bring-top'));
-  this.bottomBtn_    = new goog.ui.ToolbarButton(this.makeCaption_('bring-bottom'));
-  this.copyBtn_      = new goog.ui.ToolbarButton('複製');
-  this.deleteBtn_    = new goog.ui.ToolbarButton(this.makeCaption_('delete'));
+  this.modeSelector_ = new closuredraw.ToolbarSelect(null, null, null, dom);
+  this.imageBtn_     = new goog.ui.ToolbarButton(this.makeCaption_('insert-image'), null, dom);
+  this.strokeWidth_  = new goog.ui.ToolbarSelect(null, null, null, dom);
+  this.strokeColor_  = this.createColorButton_(this.makeCaption_('color-stroke', 12), null, dom);
+  this.fillColor_    = this.createColorButton_(this.makeCaption_('color-fill',   12), null, dom);
+  this.fontSize_     = new goog.ui.ToolbarSelect(null, null, null, dom);
+  this.upBtn_        = new goog.ui.ToolbarButton(this.makeCaption_('bring-up'), null, dom);
+  this.downBtn_      = new goog.ui.ToolbarButton(this.makeCaption_('bring-down'), null, dom);
+  this.topBtn_       = new goog.ui.ToolbarButton(this.makeCaption_('bring-top'), null, dom);
+  this.bottomBtn_    = new goog.ui.ToolbarButton(this.makeCaption_('bring-bottom'), null, dom);
+  this.copyBtn_      = new goog.ui.ToolbarButton(this.makeCaption_('copy'), null, dom);
+  this.deleteBtn_    = new goog.ui.ToolbarButton(this.makeCaption_('delete'), null, dom);
 
   // initialize the mode selector
   goog.array.forEach(closuredraw.Toolbar.ModeList, function(mode) {
@@ -149,6 +156,18 @@ closuredraw.Toolbar.prototype.createColorButton_ = function(caption) {
 };
 
 /**
+ * Creates a tooltip and attachs it to the specific button.
+ * @param {goog.ui.Componet} button The button attached to.
+ * @param {string} message The contents of tooltip.
+ * @private
+ */
+closuredraw.Toolbar.prototype.createTooltip = function(button, message) {
+  var tooltip = new goog.ui.Tooltip(
+	button.getElement(), message, this.getDomHelper());
+  this.tooltips_.push(tooltip);
+};
+
+/**
  * Event handler for ACTION event from the select button.
  * @param {goog.events.Event} e Event object.
  * @private
@@ -228,6 +247,19 @@ closuredraw.Toolbar.prototype.enterDocument = function() {
   eh.listen(this.strokeColor_,  goog.ui.Component.EventType.ACTION, this.onChangeColor_);
   eh.listen(this.fillColor_,    goog.ui.Component.EventType.ACTION, this.onChangeColor_);
   eh.listen(this.fontSize_,     goog.ui.Component.EventType.ACTION, this.onSelect_);
+
+  this.createTooltip(this.modeSelector_, goog.getMsg('Select editing mode'));
+  this.createTooltip(this.imageBtn_,     goog.getMsg('Insert image'));
+  this.createTooltip(this.strokeWidth_,  goog.getMsg('Stroke width'));
+  this.createTooltip(this.strokeColor_,  goog.getMsg('Stroke color'));
+  this.createTooltip(this.fillColor_,    goog.getMsg('Fill color'));
+  this.createTooltip(this.fontSize_,     goog.getMsg('Font size'));
+  this.createTooltip(this.upBtn_,        goog.getMsg('Rise shape one step'));
+  this.createTooltip(this.downBtn_,      goog.getMsg('Lowner shape one step'));
+  this.createTooltip(this.topBtn_,       goog.getMsg('Rise shape to top'));
+  this.createTooltip(this.bottomBtn_,    goog.getMsg('Lower shape to bottom'));
+  this.createTooltip(this.copyBtn_,      goog.getMsg('Duplicate shape'));
+  this.createTooltip(this.deleteBtn_,    goog.getMsg('Delete shape'));
 };
 
 /** @inheritDoc */

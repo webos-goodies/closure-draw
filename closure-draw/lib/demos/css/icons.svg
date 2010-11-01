@@ -142,6 +142,42 @@
        y1="940.36218"
        x2="364"
        y2="852.36218" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3213"
+       id="linearGradient2635"
+       gradientUnits="userSpaceOnUse"
+       x1="336"
+       y1="940.36218"
+       x2="336"
+       y2="812.36218" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3195"
+       id="linearGradient2637"
+       gradientUnits="userSpaceOnUse"
+       x1="364"
+       y1="940.36218"
+       x2="364"
+       y2="852.36218" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3213"
+       id="linearGradient3491"
+       gradientUnits="userSpaceOnUse"
+       x1="336"
+       y1="940.36218"
+       x2="336"
+       y2="812.36218" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3195"
+       id="linearGradient3493"
+       gradientUnits="userSpaceOnUse"
+       x1="364"
+       y1="940.36218"
+       x2="364"
+       y2="852.36218" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -153,16 +189,16 @@
      objecttolerance="10"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="183.40923"
-     inkscape:cy="846.6936"
+     inkscape:zoom="1"
+     inkscape:cx="230.98434"
+     inkscape:cy="878.17037"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      showgrid="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1070"
+     inkscape:window-width="1270"
+     inkscape:window-height="682"
      inkscape:window-x="0"
-     inkscape:window-y="0">
+     inkscape:window-y="6">
     <inkscape:grid
        type="xygrid"
        id="grid2383"
@@ -339,31 +375,6 @@
          x="272.23038"
          y="826.30841"
          style="font-size:148.66821289px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Serif;-inkscape-font-specification:Serif">A</tspan></text>
-    <g
-       id="g3349"
-       transform="translate(0,896)">
-      <rect
-         y="812.36218"
-         x="272"
-         height="128"
-         width="128"
-         id="rect3191"
-         style="fill:url(#linearGradient3354);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="cccccccc"
-         id="path3193"
-         d="M 272,900.36218 C 272,900.36218 298.28875,896.41275 316,888.36218 C 321.5,885.86218 346.5,870.86218 352,852.36218 L 372,852.36218 C 380,876.36218 400,888.36218 400,888.36218 L 400,940.36218 L 272,940.36218 L 272,900.36218 z"
-         style="fill:url(#linearGradient3356);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         d="M 320,844.36218 A 16,16 0 1 1 288,844.36218 A 16,16 0 1 1 320,844.36218 z"
-         sodipodi:ry="16"
-         sodipodi:rx="16"
-         sodipodi:cy="844.36218"
-         sodipodi:cx="304"
-         id="path3223"
-         style="fill:#ee7f00;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         sodipodi:type="arc" />
-    </g>
     <rect
        style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3229"
@@ -499,48 +510,93 @@
        id="path3406"
        style="fill:#4c4c4c;fill-opacity:1;stroke:none;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
        sodipodi:type="arc" />
+    <g
+       transform="translate(0,1024)"
+       id="g2627">
+      <rect
+         style="fill:url(#linearGradient2635);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect2629"
+         width="128"
+         height="128"
+         x="272"
+         y="812.36218" />
+      <path
+         style="fill:url(#linearGradient2637);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 272,900.36218 C 272,900.36218 298.28875,896.41275 316,888.36218 C 321.5,885.86218 346.5,870.86218 352,852.36218 L 372,852.36218 C 380,876.36218 400,888.36218 400,888.36218 L 400,940.36218 L 272,940.36218 L 272,900.36218 z"
+         id="path2631"
+         sodipodi:nodetypes="cccccccc" />
+      <path
+         sodipodi:type="arc"
+         style="fill:#ee7f00;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path2633"
+         sodipodi:cx="304"
+         sodipodi:cy="844.36218"
+         sodipodi:rx="16"
+         sodipodi:ry="16"
+         d="M 320,844.36218 A 16,16 0 1 1 288,844.36218 A 16,16 0 1 1 320,844.36218 z" />
+    </g>
+    <path
+       sodipodi:type="arc"
+       style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2645"
+       sodipodi:cx="336"
+       sodipodi:cy="1260.3622"
+       sodipodi:rx="32"
+       sodipodi:ry="32"
+       d="M 368,1260.3622 A 32,32 0 1 1 304,1260.3622 A 32,32 0 1 1 368,1260.3622 z"
+       transform="matrix(1.1269876,0,0,1.1269793,-22.731437,367.96009)" />
+    <path
+       transform="matrix(1.1269876,0,0,1.1269793,-58.667834,332.02343)"
+       d="M 368,1260.3622 A 32,32 0 1 1 304,1260.3622 A 32,32 0 1 1 368,1260.3622 z"
+       sodipodi:ry="32"
+       sodipodi:rx="32"
+       sodipodi:cy="1260.3622"
+       sodipodi:cx="336"
+       id="path2639"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:type="arc" />
     <path
        sodipodi:nodetypes="cccccccc"
-       id="path3414"
-       d="M 35.5,29.362182 L 35.5,40.862182 L 38.5,38.862182 L 39.5,43.362182 L 43.5,41.862182 L 41,37.862182 L 44.5,37.862182 L 35.5,29.362182 z"
+       id="path3417"
+       d="M 67.5,29.36219 L 67.5,40.86219 L 70.5,38.86219 L 71.5,43.36219 L 75.5,41.86219 L 73,37.86219 L 76.5,37.86219 L 67.5,29.36219 z"
        style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:0.65876251;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        sodipodi:nodetypes="ccc"
-       id="path3416"
-       d="M 32.5,50.362182 L 38.5,49.362182 L 40,44.862182"
+       id="path3419"
+       d="M 64.5,50.36219 L 70.5,49.36219 L 72,44.86219"
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
-       y="47.326881"
-       x="36.5"
+       y="47.326916"
+       x="68.5"
        height="4.5352993"
        width="4.5421195"
-       id="rect3418"
+       id="rect3421"
        style="fill:#ffffff;fill-opacity:0.68518521;stroke:#000000;stroke-width:0.70033789;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:0.53814065;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 38.5,48.362182 L 38.5,57.811064 L 40.936535,56.16778 L 41.748714,59.865169 L 44.997426,58.632706 L 42.96698,55.346139 L 45.809604,55.346139 L 38.5,48.362182 z"
-       id="path3420"
+       d="M 70.5,48.36219 L 70.5,57.81107 L 72.93654,56.16779 L 73.74871,59.86518 L 76.99743,58.63272 L 74.96698,55.34615 L 77.8096,55.34615 L 70.5,48.36219 z"
+       id="path3423"
        sodipodi:nodetypes="cccccccc"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
-       y="62.872807"
-       x="34.510624"
+       y="62.872814"
+       x="66.51062"
        height="10.989132"
        width="10.989132"
-       id="rect3422"
+       id="rect3425"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.45788047;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
@@ -549,252 +605,278 @@
        sodipodi:rx="48"
        sodipodi:cy="494.36218"
        sodipodi:cx="336"
-       id="path3424"
+       id="path3427"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        sodipodi:type="arc"
-       transform="matrix(0.125,0,0,0.125,-2,22.81691)"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       transform="matrix(0.125,0,0,0.125,30,22.81692)"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        sodipodi:nodetypes="cccc"
-       id="path3426"
-       d="M 34,106.36218 L 36.5,97.862182 L 41.5,102.86218 L 46,94.362182"
+       id="path3429"
+       d="M 66,106.36221 L 68.5,97.86219 L 73.5,102.86219 L 78,94.36219"
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <text
        transform="scale(1.0324181,0.9685998)"
-       id="text3428"
-       y="126.84514"
-       x="32.091599"
+       id="text3431"
+       y="126.84509"
+       x="63.086788"
        style="font-size:2.32294083px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
        xml:space="preserve"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"><tspan
          style="font-size:18.58352661px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Serif;-inkscape-font-specification:Serif"
-         y="126.84514"
-         x="32.091599"
-         id="tspan3430"
+         y="126.84509"
+         x="63.086788"
+         id="tspan3433"
          sodipodi:role="line">A</tspan></text>
-    <g
-       transform="matrix(0.125,0,0,0.125,-2,134.81691)"
-       id="g3432"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90">
-      <rect
-         style="fill:url(#linearGradient3476);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect3434"
-         width="128"
-         height="128"
-         x="272"
-         y="812.36218" />
-      <path
-         style="fill:url(#linearGradient3478);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="M 272,900.36218 C 272,900.36218 298.28875,896.41275 316,888.36218 C 321.5,885.86218 346.5,870.86218 352,852.36218 L 372,852.36218 C 380,876.36218 400,888.36218 400,888.36218 L 400,940.36218 L 272,940.36218 L 272,900.36218 z"
-         id="path3436"
-         sodipodi:nodetypes="cccccccc" />
-      <path
-         sodipodi:type="arc"
-         style="fill:#ee7f00;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="path3438"
-         sodipodi:cx="304"
-         sodipodi:cy="844.36218"
-         sodipodi:rx="16"
-         sodipodi:ry="16"
-         d="M 320,844.36218 A 16,16 0 1 1 288,844.36218 A 16,16 0 1 1 320,844.36218 z" />
-    </g>
     <rect
-       y="130.37775"
-       x="38.000057"
+       y="130.3777"
+       x="70.000061"
        height="8"
        width="8"
-       id="rect3440"
+       id="rect3435"
        style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
-       transform="matrix(0.125,0,0,0.125,-1.9999425,6.8324735)"
+       transform="matrix(0.125,0,0,0.125,30.000057,6.8324798)"
        d="M 360,994.36218 A 38,38 0 1 1 284,994.36218 A 38,38 0 1 1 360,994.36218 z"
        sodipodi:ry="38"
        sodipodi:rx="38"
        sodipodi:cy="994.36218"
        sodipodi:cx="322"
-       id="path3442"
+       id="path3437"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        sodipodi:type="arc"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
-       transform="matrix(0.1250453,0,0,0.125043,-2.02587,22.791458)"
+       transform="matrix(0.1250453,0,0,0.125043,29.97413,22.79147)"
        sodipodi:type="arc"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path3444"
+       id="path3439"
        sodipodi:cx="322"
        sodipodi:cy="994.36218"
        sodipodi:rx="38"
        sodipodi:ry="38"
        d="M 360,994.36218 A 38,38 0 1 1 284,994.36218 A 38,38 0 1 1 360,994.36218 z"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
        style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:0.49988467;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3446"
+       id="rect3441"
        width="8.0001154"
        height="7.9961944"
-       x="38.5"
+       x="70.5"
        y="146.36598"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
-       y="157.37775"
-       x="33.000057"
+       y="157.3777"
+       x="65.000061"
        height="6.5"
        width="6.5"
-       id="rect3448"
+       id="rect3443"
        style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
        style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3450"
+       id="rect3445"
        width="6.5"
        height="6.5"
-       x="33.000057"
-       y="157.37775"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       x="65.000061"
+       y="157.3777"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
-       y="164.87775"
-       x="40.500057"
+       y="164.8777"
+       x="72.500061"
        height="6.5"
        width="6.5"
-       id="rect3452"
+       id="rect3447"
        style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
-       transform="matrix(0.1408735,0,0,0.1408724,-7.3250362,-13.180631)"
+       transform="matrix(0.1408735,0,0,0.1408724,24.674964,-13.18062)"
        d="M 368,1260.3622 A 32,32 0 1 1 304,1260.3622 A 32,32 0 1 1 368,1260.3622 z"
        sodipodi:ry="32"
        sodipodi:rx="32"
        sodipodi:cy="1260.3622"
        sodipodi:cx="336"
-       id="path3454"
+       id="path3449"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        sodipodi:type="arc"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
-       transform="matrix(0.1408719,0,0,0.1408704,-7.3240888,2.8218523)"
+       transform="matrix(0.1408719,0,0,0.1408704,24.675911,2.8218598)"
        sodipodi:type="arc"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path3456"
+       id="path3451"
        sodipodi:cx="336"
        sodipodi:cy="1260.3622"
        sodipodi:rx="32"
        sodipodi:ry="32"
        d="M 368,1260.3622 A 32,32 0 1 1 304,1260.3622 A 32,32 0 1 1 368,1260.3622 z"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
-       y="173.37775"
-       x="32.992542"
+       y="173.3777"
+       x="64.992538"
        height="6.5"
        width="6.5"
-       id="rect3458"
+       id="rect3453"
        style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
        style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3460"
+       id="rect3455"
        width="6.5"
        height="6.5"
-       x="40.492542"
-       y="180.87775"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       x="72.492538"
+       y="180.8777"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
        style="fill:#ff3e3e;fill-opacity:1;stroke:none;stroke-width:1.27939892;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
-       id="rect3462"
+       id="rect3457"
        width="15.992485"
        height="8"
-       x="32"
-       y="12.362183"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       x="64"
+       y="12.362192"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        style="fill:none;fill-opacity:1;stroke:#7f7f7f;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 45,192.36218 L 35,202.36218"
-       id="path3464"
+       d="M 77,192.36221 L 67,202.36221"
+       id="path3459"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        style="fill:none;fill-opacity:1;stroke:#7f7f7f;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 35,192.36218 L 45,202.36218"
-       id="path3466"
+       d="M 67,192.36221 L 77,202.36221"
+       id="path3461"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        sodipodi:nodetypes="cc"
-       id="path3468"
-       d="M 45,191.36218 L 35,201.36218"
+       id="path3463"
+       d="M 77,191.36221 L 67,201.36221"
        style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        sodipodi:nodetypes="cc"
-       id="path3470"
-       d="M 35,191.36218 L 45,201.36218"
+       id="path3465"
+       d="M 67,191.36221 L 77,201.36221"
        style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
-       transform="matrix(0.125,0,0,0.125,-2,6.8169098)"
+       transform="matrix(0.125,0,0,0.125,30,6.8169198)"
        d="M 388,1628.3622 A 52,36 0 1 1 284,1628.3622 A 52,36 0 1 1 388,1628.3622 z"
        sodipodi:ry="36"
        sodipodi:rx="52"
        sodipodi:cy="1628.3622"
        sodipodi:cx="336"
-       id="path3472"
+       id="path3467"
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
        sodipodi:type="arc"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        sodipodi:type="arc"
        style="fill:#4c4c4c;fill-opacity:1;stroke:none;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
-       id="path3474"
+       id="path3469"
        sodipodi:cx="336"
        sodipodi:cy="1628.3622"
        sodipodi:rx="52"
        sodipodi:ry="36"
        d="M 388,1628.3622 A 52,36 0 1 1 284,1628.3622 A 52,36 0 1 1 388,1628.3622 z"
-       transform="matrix(0.125,0,0,0.125,-2,22.81691)"
-       inkscape:export-filename="/Users/ito/share/vmware/simple-draw/closure-draw/lib/demos/css/icons.png"
+       transform="matrix(0.125,0,0,0.125,30,22.81692)"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g3471"
+       transform="matrix(0.125,0,0,0.125,30,150.81691)"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         y="812.36218"
+         x="272"
+         height="128"
+         width="128"
+         id="rect3473"
+         style="fill:url(#linearGradient3491);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccccccc"
+         id="path3475"
+         d="M 272,900.36218 C 272,900.36218 298.28875,896.41275 316,888.36218 C 321.5,885.86218 346.5,870.86218 352,852.36218 L 372,852.36218 C 380,876.36218 400,888.36218 400,888.36218 L 400,940.36218 L 272,940.36218 L 272,900.36218 z"
+         style="fill:url(#linearGradient3493);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         d="M 320,844.36218 A 16,16 0 1 1 288,844.36218 A 16,16 0 1 1 320,844.36218 z"
+         sodipodi:ry="16"
+         sodipodi:rx="16"
+         sodipodi:cy="844.36218"
+         sodipodi:cx="304"
+         id="path3477"
+         style="fill:#ee7f00;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:type="arc" />
+    </g>
+    <path
+       transform="matrix(0.1408735,0,0,0.1408724,27.15857,68.81193)"
+       d="M 368,1260.3622 A 32,32 0 1 1 304,1260.3622 A 32,32 0 1 1 368,1260.3622 z"
+       sodipodi:ry="32"
+       sodipodi:rx="32"
+       sodipodi:cy="1260.3622"
+       sodipodi:cx="336"
+       id="path3479"
+       style="fill:#dddddd;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:type="arc"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3481"
+       sodipodi:cx="336"
+       sodipodi:cy="1260.3622"
+       sodipodi:rx="32"
+       sodipodi:ry="32"
+       d="M 368,1260.3622 A 32,32 0 1 1 304,1260.3622 A 32,32 0 1 1 368,1260.3622 z"
+       transform="matrix(0.1408735,0,0,0.1408724,22.666521,64.31985)"
+       inkscape:export-filename="/mnt/hgfs/vmware/icons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
   </g>

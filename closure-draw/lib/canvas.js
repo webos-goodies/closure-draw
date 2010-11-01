@@ -69,6 +69,7 @@ closuredraw.Canvas = function(width, height, opt_domHelper) {
   this.promptDialogs_ = {};
   this.promptScope_   = null;
   this.promptHandler_ = null;
+  this.clickTime_     = 0;
 
   // create operation mode objects
   this.modes_ = {};
@@ -92,7 +93,7 @@ goog.inherits(closuredraw.Canvas, goog.ui.Component);
  * @enum {string}
  */
 closuredraw.Canvas.EventType = {
-  STATUS_CHANGED: 'CLOSUREDRAW_STATUS_CHANGED',
+  STATUS_CHANGED: 'CLOSUREDRAW_STATUS_CHANGED'
 };
 
 /** @constructor */
@@ -519,6 +520,13 @@ closuredraw.Canvas.prototype.dragging = function() {
 };
 
 closuredraw.Canvas.prototype.onMouseDownCanvas_ = function(e) {
+  var time = (new Date()).getTime();
+  if(time - this.clickTime_ < 500 &&
+	 this.currentMode_ != closuredraw.Mode.MOVE &&
+	 this.currentMode_ != closuredraw.Mode.MODIFY) {
+	this.setMode(closuredraw.Mode.MOVE);
+  }
+  this.clickTime_ = time;
   this.getCurrentMode_().onMouseDownCanvas(e);
 };
 
@@ -615,6 +623,7 @@ closuredraw.Canvas.prototype.copyShape = function(index) {
   if(shape) {
 	if(this.currentShape_ >= 0)
 	  this.setCurrentShapeIndex(-1);
+	this.setMode(closuredraw.Mode.MOVE);
 	var doc = goog.dom.xml.loadXml(
 	  '<?xml version="1.0" encoding="UTF-8"?>' +
 		'<svg xmlns="' + closuredraw.XmlNS.SVG +

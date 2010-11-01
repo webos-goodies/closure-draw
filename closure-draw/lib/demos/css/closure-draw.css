@@ -18,7 +18,8 @@
 .closuredraw-delete       { background-position: 0px -176px; }
 .closuredraw-color-stroke { background-position: 0px -192px; }
 .closuredraw-color-fill   { background-position: 0px -208px; }
-.closuredraw-insert-image { background-position: 0px -224px; }
+.closuredraw-copy         { background-position: 0px -224px; }
+.closuredraw-insert-image { background-position: 0px -240px; }
 
 .closuredraw-modal-bg {
     position: absolute;
@@ -64,4 +65,13 @@
 
 .closuredraw-modal-buttons button {
     margin: 5px;
+}
+
+.goog-tooltip {
+  font-size: 12px;
+  background: #ffe;
+  border: 1px solid #999;
+  border-width: 1px 2px 2px 1px;
+  padding: 4px;
+  z-index: 30000;
 }
