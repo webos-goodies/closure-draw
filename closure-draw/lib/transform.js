@@ -13,7 +13,7 @@
 // Copyright 2010 Chihiro Ito. All Rights Reserved.
 
 goog.provide('closuredraw.Transform');
-goog.require('goog.math.Vec2');
+goog.require('closuredraw.utils');
 
 /**
  * Closure Draw widget.

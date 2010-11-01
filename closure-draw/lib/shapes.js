@@ -21,9 +21,10 @@ goog.provide('closuredraw.Image');
 
 goog.require('goog.string');
 goog.require('goog.array');
-goog.require('goog.math.Vec2');
 goog.require('goog.graphics.Path');
 goog.require('goog.graphics.AffineTransform');
+goog.require('closuredraw.XmlNS');
+goog.require('closuredraw.utils');
 goog.require('closuredraw.Transform');
 goog.require('closuredraw.VmlElementWrapper');
 
@@ -162,7 +163,7 @@ closuredraw.AbstractShape.prototype.usingVml_ = function() {
 };
 
 closuredraw.AbstractShape.prototype.importing_ = function(arg0) {
-  return arg0 instanceof closuredraw.Widget.ImportParams;
+  return arg0 instanceof closuredraw.Canvas.ImportParams;
 };
 
 closuredraw.AbstractShape.prototype.isPath = function() { return false; }
@@ -429,10 +430,10 @@ closuredraw.Path.prototype.contains = function(x, y) {
   if(numVert > 2 && (!this.getStroke() || this.getFill())) {
 	var count = 0;
 	for(var i = 1 ; i < numVert ; ++i) {
-	  count += this.isLeftLine(pt, vertices[i-1], vertices[i]);
+	  count += this.countLine(pt, vertices[i-1], vertices[i]);
 	}
-	count += this.isLeftLine(pt, vertices[i-1], vertices[0]);
-	return (count & 1) != 0;
+	count += this.countLine(pt, vertices[i-1], vertices[0]);
+	return count != 0;
   } else {
 	var width = (this.getStrokeWidthForHitTest() *
 				 Math.max(this.size_.x / this.width, this.size_.y / this.height));
@@ -631,10 +632,12 @@ closuredraw.Path.prototype.inverseTransform = function(pt) {
   return newPt;
 };
 
-closuredraw.Path.prototype.isLeftLine = function(pt, pt1, pt2) {
+closuredraw.Path.prototype.countLine = function(pt, pt1, pt2) {
   if(Math.min(pt1.y, pt2.y) <= pt.y && pt.y < Math.max(pt1.y, pt2.y)) {
 	var t = (pt.y - pt1.y) / (pt2.y - pt1.y);
-	return pt1.x + (pt2.x - pt1.x)*t < pt.x ? 1 : 0;
+	if(pt1.x + (pt2.x - pt1.x)*t < pt.x) {
+	  return pt1.y < pt2.y ? +1 : -1;
+	}
   }
   return 0;
 };
