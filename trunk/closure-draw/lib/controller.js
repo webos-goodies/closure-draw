@@ -13,6 +13,7 @@
 // Copyright 2010 Chihiro Ito. All Rights Reserved.
 
 goog.provide('closuredraw.Controller');
+goog.require('goog.Disposable');
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.events.EventTarget');
@@ -80,8 +81,8 @@ closuredraw.Controller.prototype.addComponent = function(component) {
  */
 closuredraw.Controller.prototype.addElement = function(element) {
   var command = element.getAttribute('closuredrawcmd');
-  var value   = element.getAttribute('closuredrawval');
-  if(command && value && closuredraw.Controller.isCommand_(command)) {
+  var value   = element.getAttribute('closuredrawval') || '';
+  if(command && closuredraw.Controller.isCommand_(command)) {
 	this.eh_.listen(
 	  element, goog.events.EventType.CLICK, goog.bind(this.onClick_, this, command, value));
   }
@@ -157,7 +158,7 @@ closuredraw.Controller.prototype.onStatusChanged_ = function(e) {
 };
 
 /** @inheritDoc */
-closuredraw.Controller.disposeInternal = function() {
+closuredraw.Controller.prototype.disposeInternal = function() {
   if(this.eh_) {
 	this.eh_.removeAll();
 	this.eh_.dispose();
