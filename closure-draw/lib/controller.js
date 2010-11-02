@@ -116,7 +116,7 @@ closuredraw.Controller.isCommand_ = function(str) {
  */
 closuredraw.Controller.prototype.onAction_ = function(e) {
   var model = e.target.getModel() || {};
-  if(closuredraw.Controller.isCommand_(model.command || '')) {
+  if(goog.isObject(model) && closuredraw.Controller.isCommand_(model.command || '')) {
 	this.canvas_.execCommand(model.command, model.arg);
   }
 };
